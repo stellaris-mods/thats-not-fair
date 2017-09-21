@@ -1,0 +1,4 @@
+
+NGameplay = {
+	CORE_SECTOR_SYSTEM_CAP = 5 # What the hell were they thinking?
+}
