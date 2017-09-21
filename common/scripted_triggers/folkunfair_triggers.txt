@@ -1,0 +1,19 @@
+has_valuable_country = {
+	exists = space_owner
+	space_owner = {
+		OR = {
+			is_country_type = "guardian"
+			is_country_type = "guardian_dragon"
+			is_country_type = "guardian_stellarite"
+			is_country_type = "guardian_wraith"
+			is_country_type = "guardian_hiver"
+			is_country_type = "guardian_horror"
+			is_country_type = "guardian_fortress"
+			is_country_type = "guardian_dreadnought"
+			is_country_type = "guardian_sphere"
+			is_country_type = "enclave"
+			is_country_type = "fallen_empire"
+			is_country_type = "pirate"
+		}
+	}
+}

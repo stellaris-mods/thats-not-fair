@@ -1,0 +1,681 @@
+
+# From country scope
+ensure_colonizable_planet = {
+	# We can't clear event targets, so set it to the countries home
+	# otherwise we can't know if it was set by the effect, or
+	# if it's the same as a previous value
+	if = {
+		limit = {
+			# Prevents error.log entry on first run through
+			exists = event_target:unfairplanet
+		}
+		root.capital_scope = { save_event_target_as = unfairplanet }
+	}
+	# Or, I have not found a way to clear it, at least.
+	# And using variables to track if the event target is set would be crap.
+
+	root.capital_scope = {
+		closest_system = {
+			limit = {
+				NOT = {
+					is_same_value = root.capital_scope.solar_system
+					has_star_flag = "folkunfair_picked"
+					has_star_flag = "hostile_system"
+					has_star_flag = "sanctuary_system"
+					has_star_flag = "enclave"
+					has_star_flag = "guardian"
+					has_star_flag = "guardians_dragon_system"
+					has_star_flag = "guardians_stellarite_system"
+					has_star_flag = "guardians_stellarite_about_to_spawn"
+					has_star_flag = "stellarite_present"
+					has_star_flag = "guardians_technosphere_system"
+					has_star_flag = "guardians_horror_system"
+					has_star_flag = "horror_spawned"
+					has_star_flag = "guardians_dreadnought_system"
+					has_star_flag = "guardians_hive_system"
+					has_star_flag = "guardians_artists_system"
+				}
+				# OR = {
+				# 	has_planet_class = "pc_desert"
+				# 	has_planet_class = "pc_tropical"
+				# 	has_planet_class = "pc_arid"
+				# 	has_planet_class = "pc_continental"
+				# 	has_planet_class = "pc_ocean"
+				# 	has_planet_class = "pc_tundra"
+				# 	has_planet_class = "pc_arctic"
+				# 	has_planet_class = "pc_alpine"
+				# 	has_planet_class = "pc_savannah"
+				# }
+				# According to 00_habitability_traits,
+				# tertiary habitability is 20%, and nuked planets etc are 10%.
+				# So we look for anything above 10%.
+				any_planet = {
+					habitability = { who = root.species value > 0.1 }
+				}
+			}
+			# First, see if we find an ideal planet
+			set_star_flag = "folkunfair_picked"
+			random_system_planet = {
+				limit = {
+					is_ideal_planet_class = {
+						who = root
+						status = yes
+					}
+					is_colony = no
+					has_owner = no
+				}
+				set_planet_flag = "folkunfair_picked"
+				save_event_target_as = unfairplanet
+			}
+			if = {
+				limit = {
+					NOT = {
+						# Planets in the system scope
+						any_planet = {
+							has_planet_flag = "folkunfair_picked"
+						}
+					}
+				}
+				# We did not find an ideal planet, so we need to convert.
+				# So secondly, look for a colonizable planet.
+				# We need to convert one of the planets to our type
+				random_system_planet = {
+					limit = {
+						habitability = { who = root.species value > 0.4 }
+						is_colony = no
+						has_owner = no
+					}
+					set_planet_flag = "folkunfair_picked"
+					save_event_target_as = unfairplanet
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						# Planets in the system scope
+						any_planet = {
+							has_planet_flag = "folkunfair_picked"
+						}
+					}
+				}
+				# We did not find any planet with habitability above 40%
+				# So thirdly, we just select any random planet.
+				# We need to convert one of the planets to our type
+				random_system_planet = {
+					limit = {
+						NOT = {
+							any_pop = { owner = { is_country_type = "default" } }
+						}
+					}
+					if = {
+						limit = { has_owner = yes }
+						owner = { destroy_country = yes }
+					}
+					if = {
+						limit = { is_colony = yes }
+						destroy_colony = {
+							keep_buildings = no
+						}
+					}
+					set_planet_flag = "folkunfair_picked"
+					save_event_target_as = unfairplanet
+				}
+			}
+		}
+	}
+}
+
+ensure_ideal_planet = {
+	if = {
+		limit = {
+			event_target:unfairplanet = {
+				is_ideal_planet_class = {
+					who = root
+					status = no
+				}
+			}
+		}
+		switch = {
+			trigger = ideal_planet_class
+			pc_continental = { event_target:unfairplanet = { change_pc = pc_continental } }
+			pc_ocean = { event_target:unfairplanet = { change_pc = pc_ocean } }
+			pc_desert = { event_target:unfairplanet = { change_pc = pc_desert } }
+			pc_tropical = { event_target:unfairplanet = { change_pc = pc_tropical } }
+			pc_arid = { event_target:unfairplanet = { change_pc = pc_arid } }
+			pc_tundra = { event_target:unfairplanet = { change_pc = pc_tundra } }
+			pc_arctic = { event_target:unfairplanet = { change_pc = pc_arctic } }
+			pc_savannah = { event_target:unfairplanet = { change_pc = pc_savannah } }
+			pc_alpine = { event_target:unfairplanet = { change_pc = pc_alpine } }
+			pc_gas_giant = { event_target:unfairplanet = { change_pc = pc_gas_giant } }
+			pc_molten = { event_target:unfairplanet = { change_pc = pc_molten } }
+			pc_barren = { event_target:unfairplanet = { change_pc = pc_barren } }
+			pc_barren_cold = { event_target:unfairplanet = { change_pc = pc_barren_cold } }
+			pc_toxic = { event_target:unfairplanet = { change_pc = pc_toxic } }
+			pc_frozen = { event_target:unfairplanet = { change_pc = pc_frozen } }
+			pc_infested = { event_target:unfairplanet = { change_pc = pc_infested } }
+			pc_ai = { event_target:unfairplanet = { change_pc = pc_ai } }
+			pc_shielded = { event_target:unfairplanet = { change_pc = pc_shielded } }
+			pc_asteroid = { event_target:unfairplanet = { change_pc = pc_asteroid } }
+			pc_ammonia = { event_target:unfairplanet = { change_pc = pc_ammonia } }
+			pc_antarctic = { event_target:unfairplanet = { change_pc = pc_antarctic } }
+			pc_cascadian = { event_target:unfairplanet = { change_pc = pc_cascadian } }
+			pc_desertislands = { event_target:unfairplanet = { change_pc = pc_desertislands } }
+			pc_frozen_desert = { event_target:unfairplanet = { change_pc = pc_frozen_desert } }
+			pc_geothermal = { event_target:unfairplanet = { change_pc = pc_geothermal } }
+			pc_glacial = { event_target:unfairplanet = { change_pc = pc_glacial } }
+			pc_hadesert = { event_target:unfairplanet = { change_pc = pc_hadesert } }
+			pc_hajungle = { event_target:unfairplanet = { change_pc = pc_hajungle } }
+			pc_mangrove = { event_target:unfairplanet = { change_pc = pc_mangrove } }
+			pc_mesa = { event_target:unfairplanet = { change_pc = pc_mesa } }
+			pc_methane = { event_target:unfairplanet = { change_pc = pc_methane } }
+			pc_oasis = { event_target:unfairplanet = { change_pc = pc_oasis } }
+			pc_sandsea = { event_target:unfairplanet = { change_pc = pc_sandsea } }
+			pc_steppe = { event_target:unfairplanet = { change_pc = pc_steppe } }
+			pc_subarctic = { event_target:unfairplanet = { change_pc = pc_subarctic } }
+			pc_swamp = { event_target:unfairplanet = { change_pc = pc_swamp } }
+			pc_nuked = { event_target:unfairplanet = { change_pc = pc_nuked } }
+			default = {
+				event_target:unfairplanet = { change_pc = pc_gaia }
+			}
+		}
+	}
+}
+
+ensure_planet_size = {
+	event_target:unfairplanet = {
+	while = {
+		limit = {
+			planet_size < 16
+		}
+		change_planet_size < 1
+		random_tile = {
+			random_list = {
+				34 = {
+					add_deposit = d_mineral_deposit
+				}
+				33 = {
+					add_deposit = d_energy_deposit
+				}
+				33 = {
+					add_deposit = d_farmland_deposit
+				}
+			}
+		}
+	} }
+}
+
+ensure_system_clean = {
+	event_target:unfairplanet = {
+		solar_system = {
+			every_fleet_in_system = {
+				limit = { owner = { is_hostile = root } }
+				delete_fleet = this
+			}
+		}
+	}
+}
+
+unfair_colonize_planet = {
+	# Ensure capital tile
+	while = {
+		limit = {
+			NOT = { has_planet_flag = "folkunfair_foundspot" }
+		}
+		random_tile = {
+			limit = {
+				has_building = no
+				has_blocker = no
+				num_adjacent_tiles > 3
+			}
+			save_event_target_as = unfaircapitaltile
+			prev = {
+				set_planet_flag = "folkunfair_foundspot"
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_planet_flag = "folkunfair_foundspot" }
+			}
+			random_tile = {
+				limit = { has_blocker = yes }
+				remove_blocker = yes
+			}
+		}
+	}
+
+	# Ripped directly from empire_initializers.txt
+	event_target:unfaircapitaltile = {
+		set_building = "building_capital_1"
+		add_deposit = d_mineral_food_deposit
+		# HAXX ADDED LULZ
+		every_neighboring_tile = {
+			limit = { has_blocker = yes }
+			remove_blocker = yes
+		}
+		# ADVANCED_EMPIRE_COLONY_NUM_FARMS = 1
+		random_neighboring_tile = {
+			limit = { has_blocker = no has_building = no }
+			set_building = "building_hydroponics_farm_1"
+			add_deposit = d_farmland_deposit
+		}
+		# ADVANCED_EMPIRE_COLONY_NUM_POWER_PLANTS = 2
+		random_neighboring_tile = {
+			limit = { has_blocker = no has_building = no }
+			set_building = "building_power_plant_1"
+			add_deposit = d_energy_deposit
+		}
+		random_neighboring_tile = {
+			limit = { has_blocker = no has_building = no }
+			set_building = "building_power_plant_1"
+			add_deposit = d_energy_deposit
+		}
+	}
+	random_tile = {
+		limit = { has_blocker = no has_building = no }
+		add_deposit = d_farmland_deposit
+	}
+	#ADVANCED_EMPIRE_COLONY_POPS = 4
+	best_tile_for_pop = { create_pop = { species = owner_main_species ethos = root } }
+	best_tile_for_pop = { create_pop = { species = owner_main_species ethos = root } }
+	best_tile_for_pop = { create_pop = { species = owner_main_species ethos = root } }
+	best_tile_for_pop = { create_pop = { species = owner_main_species ethos = root } }
+}
+
+unfair_upgrade_homeworld = {
+#		ADVANCED_EMPIRE_EXTRA_POPS_MIN = 1,		# How many extra pops does advanced empires get on their homeworld?
+##		ADVANCED_EMPIRE_EXTRA_POPS_MAX = 3,
+	while = {
+		# From my testing it seems that they get from 1-4
+		# power plants, depending on perfect tile setup
+		# They will not remove blockers to add them.
+		count = 4
+		random_tile = {
+			limit = {
+				has_blocker = no
+				has_building = no
+				has_resource = {
+					type = energy
+					amount > 0
+				}
+				has_resource = {
+					type = minerals
+					amount = 0
+				}
+				has_resource = {
+					type = food
+					amount = 0
+				}
+				has_resource = {
+					type = society_research
+					amount = 0
+				}
+				has_resource = {
+					type = physics_research
+					amount = 0
+				}
+				has_resource = {
+					type = engineering_research
+					amount = 0
+				}
+				has_resource = {
+					type = sr_alien_pets
+					amount = 0
+				}
+				has_resource = {
+					type = sr_betharian
+					amount = 0
+				}
+			}
+			set_building = "building_power_plant_1"
+		}
+	}
+	if = {
+		limit = {
+			# Seems like 7 is the max we can start with
+			# 8 from 1.4.0
+			# AdvAI empires sometimes have 9
+			num_pops < 8
+		}
+		best_tile_for_pop = { create_pop = { species = owner_main_species ethos = root } }
+		best_tile_for_pop = { create_pop = { species = owner_main_species ethos = root } }
+	}
+
+}
+
+unfair_remove_planetmodifiers = {
+	if = {
+		limit = { has_modifier = holy_planet }
+		remove_modifier = holy_planet
+	}
+	if = {
+		limit = { has_planet_flag = "stone_age_primitives" }
+		remove_planet_flag = "stone_age_primitives"
+	}
+	# Copied from events/game_start.txt 1.5.0
+	if = {
+		limit = { has_modifier = hazardous_weather }
+		remove_modifier = hazardous_weather
+	}
+	if = {
+		limit = { has_modifier = dangerous_wildlife }
+		remove_modifier = dangerous_wildlife
+	}
+	if = {
+		limit = { has_modifier = weak_magnetic_field }
+		remove_modifier = weak_magnetic_field
+	}
+	if = {
+		limit = { has_modifier = strong_magnetic_field }
+		remove_modifier = strong_magnetic_field
+	}
+	if = {
+		limit = { has_modifier = unstable_tectonics }
+		remove_modifier = unstable_tectonics
+	}
+	if = {
+		limit = { has_modifier = tidal_locked }
+		remove_modifier = tidal_locked
+	}
+	if = {
+		limit = { has_modifier = chthonian_planet }
+		remove_modifier = chthonian_planet
+	}
+	if = {
+		limit = { has_modifier = asteroid_impacts }
+		remove_modifier = asteroid_impacts
+	}
+	if = {
+		limit = { has_modifier = extensive_moon_system }
+		remove_modifier = extensive_moon_system
+	}
+	if = {
+		limit = { has_modifier = carbon_world }
+		remove_modifier = carbon_world
+	}
+	if = {
+		limit = { has_modifier = wild_storms }
+		remove_modifier = wild_storms
+	}
+	if = {
+		limit = { has_modifier = low_gravity }
+		remove_modifier = low_gravity
+	}
+	if = {
+		limit = { has_modifier = high_gravity }
+		remove_modifier = high_gravity
+	}
+	#if = {
+	#	limit = { has_modifier = hollow_planet }
+	#	remove_modifier = hollow_planet
+	#}
+	if = {
+		limit = { has_modifier = mineral_rich }
+		remove_modifier = mineral_rich
+	}
+	if = {
+		limit = { has_modifier = ultra_rich }
+		remove_modifier = ultra_rich
+	}
+	if = {
+		limit = { has_modifier = mineral_poor }
+		remove_modifier = mineral_poor
+	}
+	if = {
+		limit = { has_modifier = titanic_life }
+		remove_modifier = titanic_life
+	}
+	if = {
+		limit = { has_modifier = mineral_poor }
+		remove_modifier = mineral_poor
+	}
+	if = {
+		limit = { has_modifier = asteroid_belt }
+		remove_modifier = asteroid_belt
+	}
+	if = {
+		limit = { has_modifier = natural_beauty }
+		remove_modifier = natural_beauty
+	}
+	if = {
+		limit = { has_modifier = atmospheric_aphrodisiac }
+		remove_modifier = atmospheric_aphrodisiac
+	}
+	if = {
+		limit = { has_modifier = atmospheric_hallucinogen }
+		remove_modifier = atmospheric_hallucinogen
+	}
+	if = {
+		limit = { has_modifier = lush_planet }
+		remove_modifier = lush_planet
+	}
+	if = {
+		limit = { has_modifier = bleak_planet }
+		remove_modifier = bleak_planet
+	}
+	if = {
+		limit = { has_modifier = irradiated_planet }
+		remove_modifier = irradiated_planet
+	}
+}
+
+# All advanced AIs get spaceports on their new planets
+unfair_spaceport = {
+	destroy_fleet = spaceport
+	root = {
+		switch = {
+			trigger = has_technology
+			tech_mass_drivers_1 = {
+				prev = {
+					create_spaceport = {
+						owner = root
+						initial_module = "projectile_weapon"
+					}
+				}
+			}
+			tech_lasers_1 = {
+				prev = {
+					create_spaceport = {
+						owner = root
+						initial_module = "laser_weapon"
+					}
+				}
+			}
+			tech_missiles_1 = {
+				prev = {
+					create_spaceport = {
+						owner = root
+						initial_module = "missile_weapon"
+					}
+				}
+			}
+		}
+	}
+}
+
+
+unfair_give_technologies = {
+	# Here's what they get based on ingame inspection that is not
+	# from weapon type or starting tech.
+	# deflectors
+	if = { limit = { NOT = { has_technology = "tech_shields_1" } }
+		give_technology = {
+			tech = tech_shields_1
+			message = no
+		}
+	}
+	# orbital energy conversion
+	if = { limit = { NOT = { has_technology = "tech_solar_panel_network" } }
+		give_technology = {
+			tech = tech_solar_panel_network
+			message = no
+		}
+	}
+	# quantum theory
+	if = { limit = { NOT = { has_technology = "tech_physics_lab_1" } }
+		give_technology = {
+			tech = tech_physics_lab_1
+			message = no
+		}
+	}
+	# biodiversity studies
+	if = { limit = { NOT = { has_technology = "tech_biolab_1" } }
+		give_technology = {
+			tech = tech_biolab_1
+			message = no
+		}
+	}
+	# adaptive bureaucracy
+	if = { limit = { NOT = { has_technology = "tech_adaptive_bureaucracy" } }
+		give_technology = {
+			tech = tech_adaptive_bureaucracy
+			message = no
+		}
+	}
+	# new worlds protocol
+	if = { limit = { NOT = { has_technology = "tech_colonization_1" } }
+		give_technology = {
+			tech = tech_colonization_1
+			message = no
+		}
+	}
+	# nanomechanics
+	if = { limit = { NOT = { has_technology = "tech_engineering_lab_1" } }
+		give_technology = {
+			tech = tech_engineering_lab_1
+			message = no
+		}
+	}
+	# nanocomposite materials
+	if = { limit = { NOT = { has_technology = "tech_ship_armor_1" } }
+		give_technology = {
+			tech = tech_ship_armor_1
+			message = no
+		}
+	}
+
+	# ALWAYS GIVE XENOLOGY BECAUSE IT SUCKS
+	if = { limit = { NOT = { has_technology = "tech_alien_life_studies" } }
+		give_technology = {
+			tech = tech_alien_life_studies
+			message = no
+		}
+	}
+
+	if = {
+		limit = {
+			has_country_flag = "folkunfair_allow_edict"
+		}
+		# powered exoskeletons
+		give_technology = {
+			tech = tech_powered_exoskeletons
+			message = no
+		}
+
+		# improved spaceport
+		give_technology = {
+			tech = tech_spaceport_2
+			message = no
+		}
+
+		# geothermal fracking
+		give_technology = {
+			tech = tech_mining_network_2
+			message = no
+		}
+
+		# orbital hydroponics
+		give_technology = {
+			tech = tech_orbital_hydroponics
+			message = no
+		}
+
+		# eco simulation
+		give_technology = {
+			tech = tech_hydroponics
+			message = no
+		}
+
+		# centralized command
+		give_technology = {
+			tech = tech_centralized_command
+			message = no
+		}
+
+		# global energy management
+		give_technology = {
+			tech = tech_power_hub_1
+			message = no
+		}
+
+		# Gravitic Sensors
+		give_technology = {
+			tech = tech_sensors_2
+			message = no
+		}
+
+		# field modulation
+		give_technology = {
+			tech = tech_power_plant_2
+			message = no
+		}
+
+
+		# Blocker techs
+		if = {
+			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_mountain_range" } } }
+			give_technology = {
+				tech = tech_tb_mountain_range
+				message = no
+			}
+		}
+		if = {
+			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_active_volcano" } } }
+			give_technology = {
+				tech = tech_tb_volcano
+				message = no
+			}
+		}
+		if = {
+			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_dense_jungle" } } }
+			give_technology = {
+				tech = tech_tb_dense_jungle
+				message = no
+			}
+		}
+		if = {
+			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_quicksand_basin" } } }
+			give_technology = {
+				tech = tech_tb_quicksand_basin
+				message = no
+			}
+		}
+		if = {
+			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_noxious_swamp" } } }
+			give_technology = {
+				tech = tech_tb_noxious_swamp
+				message = no
+			}
+		}
+		if = {
+			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_massive_glacier" } } }
+			give_technology = {
+				tech = tech_tb_massive_glacier
+				message = no
+			}
+		}
+		if = {
+			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_toxic_kelp" } } }
+			give_technology = {
+				tech = tech_tb_toxic_kelp
+				message = no
+			}
+		}
+		if = {
+			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_deep_sinkhole" } } }
+			give_technology = {
+				tech = tech_tb_deep_sinkhole
+				message = no
+			}
+		}
+	}
+}

@@ -1,0 +1,65 @@
+﻿#l_english:
+#l_braz_por:
+#l_french:
+#l_german:
+#l_polish:
+l_russian:
+#l_spanish:
+
+folkunfair.title: "That's not fair!"
+folkunfair.unfair: "Holy smokes! The average colonized planet count for advanced standard AI empires in this game §Gseems to be [Root.FolkUnfairPlanetCount]§!.\n\n§YPlease select how you wish to seed player empires below, to counter these totally unfair circumstances!§!\n\nAll options except the default will mimic an advanced start for all players. Note the §R\"Boost everyone\"§!-option, which provides for extremely accelerated gameplay.\n\n§RImportant: Technologies are given a day after the game starts running. Let it run for one day before picking research options.§!"
+folkunfair.fair: "There doesn't seem to be any standard AI empires with more than one planet.\n\nYou can still give all players an §Runfair advantage§! below. Or give everyone a boost! Enjoy!"
+
+folkunfair.default: "§MDon't give anyone anything§! (Default)"
+folkunfair.default.tooltip: "Starts the game as if you did not have this addon installed."
+
+folkunfair.one: "Give players §Bone§!"
+folkunfair.one.tooltip: "Provides players with 1 extra colonized planet and all other perks that advanced AI empires get."
+
+folkunfair.two: "Give players §Btwo§!"
+folkunfair.two.tooltip: "Provides players with 2 extra colonized planets and all other perks that advanced AI empires get."
+
+folkunfair.three: "Give players §Bthree§!"
+folkunfair.three.tooltip: "Provides players with 3 extra colonized planets and all other perks that advanced AI empires get."
+
+folkunfair.four: "Give players §Bfour§!"
+folkunfair.four.tooltip: "Provides players with 4 extra colonized planets and all other perks that advanced AI empires get."
+
+folkunfair.equalize: "§GEqualize everyone!"
+folkunfair.equalize.tooltip: "Makes sure all players and standard AI empires each have a total of 5 colonized systems and the rest of the advanced start benefits. This is essentially the same as Boost everyone! but without access to the edict, and without the extra techs."
+
+folkunfair.boostme: "§PBoost players!§!"
+folkunfair.boostme.tooltip: "Gives all players 4 planets, lots of technology, and all standard boosts that advanced AI empires get.\n\n§GAlso adds a free empire edict that are urged to take a look at it immediately.§!"
+
+folkunfair.boostai: "§PBoost AIs!§!"
+folkunfair.boostai.tooltip: "Boosts all AI empires and gives them access to the powerful empire edict!"
+
+folkunfair.boost: "§RBoost everyone!§!"
+folkunfair.boost.tooltip: "Gives all standard AI and player empires a significant bonus, and makes sure everyone has colonized 5 planets each, total, including the homeworld.\n\n§GAlso adds a free edict to standard empires that all AIs will select instantly, and keep indefinitely. You are urged to take a look at it immediately.§!"
+
+edict_folkunfair_boost: "Fair/unfair Boost §R(!)§!"
+edict_folkunfair_boost_desc: "Ladies and gentlemen, this is entertainment! Remember that if you selected \"Boost everyone\", all standard AI empires will have this edict active for the whole game now. You are free to do so if you choose.\n\n"
+
+folkunfair_allow_edict: "Allows using the Unfair Boost empire edict"
+folkunfair_allow_edict_desc: "Please do not forget to enable it immediately! All AI empires will do this."
+
+folkunfair.boostmenu: "Menu > §PBoost§!"
+folkunfair.boostmenu.tooltip: "Opens a new menu where you can give players or AIs the patented That's Not Fair-boost!"
+folkunfair.boost.desc: "The options below allow you to boost either all players, all AIs, or every standard empire.\n\nBoosting an empire makes sure it starts with 5 colonized planets, some extra technology research to skip an hour or two of early game, access to the cheat edict, some extra resources and Corvettes.\n\n§POnce you click a button below, the game starts. You can not combine the choices here with any other options in the mod.§!"
+
+folkunfair.edictmenu: "Menu > §PCheat Edict§!"
+folkunfair.edictmenu.tooltip: "Opens a new menu where you can give players or AIs access to the cheat edict."
+folkunfair.edict.desc: "The options below allow you to give either all players, all AIs, or every standard empire access to the special cheat edict provided by That's Not Fair.\n\nThis edict is designed to give a natural boost to the capabilities of the Stellaris AI. Every AI that gets access to the edict will immediately and forever enable it.\n\n§POnce you click a button below, the game starts. You can not combine the choices here with any other options in the mod.§!"
+
+folkunfair.edictme: "§PEdict players!§!"
+folkunfair.edictme.tooltip: "Gives all players access to the cheat edict."
+
+folkunfair.edictai: "§PEdict AIs!§!"
+folkunfair.edictai.tooltip: "Gives all standard AI empires access to the cheat edict."
+
+folkunfair.edictall: "§REdict everyone!§!"
+folkunfair.edictall.tooltip: "Gives all standard empires access to the cheat edict."
+
+folkunfair.back: "Menu > Back"
+folkunfair.back.tooltip: "Go back to the first window."
+

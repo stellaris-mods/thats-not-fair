@@ -1,0 +1,754 @@
+namespace = TNF
+
+event = {
+	id = TNF.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		# Find a player country first so we have a scope to work in
+		# (you cant use set_variable and such outside a country scope)
+		random_country = {
+			limit = {
+				is_ai = no
+				is_country_type = "default"
+			}
+			set_country_flag = "unfair_playercountry"
+			country_event = {
+				id = TNF.2
+			}
+		}
+	}
+}
+
+country_event = {
+	id = TNF.2
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_variable = {
+			which = FolkUnfairPlanetCount
+			value = 0
+		}
+		set_variable = {
+			which = FolkUnfairAICount
+			value = 0
+		}
+		every_country = {
+			set_country_flag = "unfair_unchecked"
+		}
+		while = {
+			limit = {
+				any_country = { has_country_flag = "unfair_unchecked" }
+			}
+			random_country = {
+				limit = { has_country_flag = "unfair_unchecked" }
+				if = {
+					limit = {
+						is_country_type = "default"
+						is_ai = yes
+						# Dont count AIs with one planet, they're not advanced
+						num_owned_planets > 1
+					}
+					root = {
+						change_variable = {
+							which = FolkUnfairAICount
+							value = 1 # +1
+						}
+					}
+					# ADVANCED_EMPIRE_MAX_EXTRA_COLONIES default is 4 as of 1.3.2
+					# There is probably a better way to assign this, but I am too lazy to find it
+					switch = {
+						trigger = num_owned_planets
+						2 = {
+							root = {
+								change_variable = {
+									which = FolkUnfairPlanetCount
+									value = 2
+								}
+							}
+						}
+						3 = {
+							root = {
+								change_variable = {
+									which = FolkUnfairPlanetCount
+									value = 3
+								}
+							}
+						}
+						4 = {
+							root = {
+								change_variable = {
+									which = FolkUnfairPlanetCount
+									value = 4
+								}
+							}
+						}
+						default = {
+							root = {
+								change_variable = {
+									which = FolkUnfairPlanetCount
+									value = 5
+								}
+							}
+						}
+					}
+				}
+				remove_country_flag = "unfair_unchecked"
+			}
+		}
+		divide_variable = {
+			which = FolkUnfairPlanetCount
+			value = FolkUnfairAICount
+		}
+	}
+}
+
+# So, this is really really weird:
+# 17 / 7 = 2.428 but the game engine tells me it's 2.714
+# wtf
+
+# These other ones were correct.
+# 20 / 8 = 2.5
+# 35 / 13 = 2.692
+# 32 / 12 = 2.666
+# 4 / 2 = 2
+# 16 / 6 = 2.666
+# 100 / 34 = 2.941
+# 94 / 34 = 2.764
+
+country_event = {
+	id = TNF.3
+	title = "folkunfair.title"
+	picture = "GFX_evt_folkunfair_init"
+	is_triggered_only = yes
+
+	trigger = {
+		is_country_type = "default"
+		is_ai = no
+		has_country_flag = "unfair_playercountry"
+	}
+	desc = {
+		trigger = {
+			check_variable = {
+				which = FolkUnfairPlanetCount
+				value < 1.01
+			}
+		}
+		text = "folkunfair.fair"
+	}
+	desc = {
+		trigger = {
+			check_variable = {
+				which = FolkUnfairPlanetCount
+				value > 1
+			}
+		}
+		text = "folkunfair.unfair"
+	}
+
+	immediate = {
+		every_country = {
+			set_variable = {
+				which = "UnfairColonize"
+				value = 0
+			}
+		}
+	}
+
+	option = {
+		name = "folkunfair.default"
+		custom_tooltip = "folkunfair.default.tooltip"
+	}
+	option = {
+		name = "folkunfair.one"
+		custom_tooltip = "folkunfair.one.tooltip"
+		hidden_effect = {
+			every_country = {
+				limit = {
+					is_country_type = "default"
+					is_ai = no
+				}
+				change_variable = {
+					which = "UnfairColonize"
+					value = 1
+				}
+				country_event = { id = TNF.5 }
+			}
+		}
+	}
+	option = {
+		name = "folkunfair.two"
+		custom_tooltip = "folkunfair.two.tooltip"
+		hidden_effect = {
+			every_country = {
+				limit = {
+					is_country_type = "default"
+					is_ai = no
+				}
+				change_variable = {
+					which = "UnfairColonize"
+					value = 2
+				}
+				country_event = { id = TNF.5 }
+			}
+		}
+	}
+	option = {
+		name = "folkunfair.three"
+		custom_tooltip = "folkunfair.three.tooltip"
+		hidden_effect = {
+			every_country = {
+				limit = {
+					is_country_type = "default"
+					is_ai = no
+				}
+				change_variable = {
+					which = "UnfairColonize"
+					value = 3
+				}
+				country_event = { id = TNF.5 }
+			}
+		}
+	}
+	option = {
+		name = "folkunfair.four"
+		custom_tooltip = "folkunfair.four.tooltip"
+		hidden_effect = {
+			every_country = {
+				limit = {
+					is_country_type = "default"
+					is_ai = no
+				}
+				change_variable = {
+					which = "UnfairColonize"
+					value = 4
+				}
+				country_event = { id = TNF.5 }
+			}
+		}
+	}
+	option = {
+		name = "folkunfair.equalize"
+		custom_tooltip = "folkunfair.equalize.tooltip"
+		hidden_effect = {
+			country_event = { id = TNF.4 }
+		}
+	}
+	option = {
+		name = "folkunfair.boostmenu"
+		custom_tooltip = "folkunfair.boostmenu.tooltip"
+		hidden_effect = {
+			country_event = { id = TNF.31 }
+		}
+	}
+	option = {
+		name = "folkunfair.edictmenu"
+		custom_tooltip = "folkunfair.edictmenu.tooltip"
+		hidden_effect = {
+			country_event = { id = TNF.32 }
+		}
+	}
+}
+
+country_event = {
+	id = TNF.31
+	title = "folkunfair.title"
+	desc = "folkunfair.boost.desc"
+	picture = "GFX_evt_folkunfair_init"
+	is_triggered_only = yes
+
+	option = {
+		name = "folkunfair.back"
+		custom_tooltip = "folkunfair.back.tooltip"
+		hidden_effect = {
+			country_event = { id = TNF.3 }
+		}
+	}
+	option = {
+		name = "folkunfair.boostme" #boostplayers
+		custom_tooltip = "folkunfair.boostme.tooltip"
+		hidden_effect = {
+			every_country = {
+				limit = {
+					is_country_type = "default"
+					is_ai = no
+				}
+				set_country_flag = "folkunfair_allow_edict"
+				change_variable = {
+					which = "UnfairColonize"
+					value = 4
+				}
+				country_event = { id = TNF.5 }
+			}
+		}
+	}
+	option = {
+		name = "folkunfair.boostai" # boost AI only
+		custom_tooltip = "folkunfair.boostai.tooltip"
+		hidden_effect = {
+			every_country = {
+				limit = {
+					is_country_type = "default"
+					is_ai = yes
+					num_owned_planets > 0
+				}
+				set_country_flag = "folkunfair_allow_edict"
+			}
+			country_event = { id = TNF.6 }
+		}
+	}
+	option = {
+		name = "folkunfair.boost" #boost everyone
+		custom_tooltip = "folkunfair.boost.tooltip"
+		hidden_effect = {
+			every_country = {
+				limit = {
+					is_country_type = "default"
+					num_owned_planets > 0
+				}
+				set_country_flag = "folkunfair_allow_edict"
+			}
+			country_event = { id = TNF.4 }
+		}
+	}
+}
+
+country_event = {
+	id = TNF.32
+	title = "folkunfair.title"
+	desc = "folkunfair.edict.desc"
+	picture = "GFX_evt_folkunfair_init"
+	is_triggered_only = yes
+
+	option = {
+		name = "folkunfair.back"
+		custom_tooltip = "folkunfair.back.tooltip"
+		hidden_effect = {
+			country_event = { id = TNF.3 }
+		}
+	}
+	option = {
+		name = "folkunfair.edictme" #edict players
+		custom_tooltip = "folkunfair.edictme.tooltip"
+		hidden_effect = {
+			every_country = {
+				limit = {
+					is_country_type = "default"
+					is_ai = no
+				}
+				set_country_flag = "folkunfair_allow_edict"
+			}
+		}
+	}
+	option = {
+		name = "folkunfair.edictai" # edict AI only
+		custom_tooltip = "folkunfair.edictai.tooltip"
+		hidden_effect = {
+			every_country = {
+				limit = {
+					is_country_type = "default"
+					is_ai = yes
+					num_owned_planets > 0
+				}
+				set_country_flag = "folkunfair_allow_edict"
+			}
+		}
+	}
+	option = {
+		name = "folkunfair.edictall" # edict everyone
+		custom_tooltip = "folkunfair.edictall.tooltip"
+		hidden_effect = {
+			every_country = {
+				limit = {
+					is_country_type = "default"
+					num_owned_planets > 0
+				}
+				set_country_flag = "folkunfair_allow_edict"
+			}
+		}
+	}
+}
+
+# Give ALL EMPIRES TNF.5, depending on size
+country_event = {
+	id = TNF.4
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_country = {
+			limit = {
+				is_country_type = "default"
+				num_owned_planets > 0
+			}
+			switch = {
+				trigger = num_owned_planets
+				1 = {
+					change_variable = {
+						which = "UnfairColonize"
+						value = 4
+					}
+				}
+				2 = {
+					change_variable = {
+						which = "UnfairColonize"
+						value = 3
+					}
+				}
+				3 = {
+					change_variable = {
+						which = "UnfairColonize"
+						value = 2
+					}
+				}
+				4 = {
+					change_variable = {
+						which = "UnfairColonize"
+						value = 1
+					}
+				}
+			}
+			country_event = { id = TNF.5 }
+		}
+	}
+}
+# Give AI-only empires TNF.5, depending on size
+country_event = {
+	id = TNF.6
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_country = {
+			limit = {
+				is_country_type = "default"
+				num_owned_planets > 0
+				is_ai = yes
+			}
+			switch = {
+				trigger = num_owned_planets
+				1 = {
+					change_variable = {
+						which = "UnfairColonize"
+						value = 4
+					}
+				}
+				2 = {
+					change_variable = {
+						which = "UnfairColonize"
+						value = 3
+					}
+				}
+				3 = {
+					change_variable = {
+						which = "UnfairColonize"
+						value = 2
+					}
+				}
+				4 = {
+					change_variable = {
+						which = "UnfairColonize"
+						value = 1
+					}
+				}
+			}
+			country_event = { id = TNF.5 }
+		}
+	}
+}
+
+
+# Gives the country in the scope (root/this) all the advanced
+# AI settings from defines, if they need them.
+country_event = {
+	id = TNF.5
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		# Planets
+		country_event = { id = TNF.50 }
+		# Resources
+		country_event = { id = TNF.100 }
+		# Technologies
+		country_event = { id = TNF.200 }
+		# Fleet
+		country_event = { id = TNF.300 }
+		# Upgrade Capital
+		country_event = { id = TNF.400 }
+		# Clean up planet modifiers
+		country_event = { id = TNF.500 }
+		# Survey relevant systems
+		country_event = { id = TNF.600 }
+	}
+}
+
+# Console cheat event, never used in the addon
+# Gives you 5 planets, removes modifiers and surveys systems.
+country_event = {
+	id = TNF.49
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		set_variable = {
+			which = "UnfairColonize"
+			value = 5
+		}
+		country_event = { id = TNF.50 }
+		# Remove silly planet modifiers
+		country_event = { id = TNF.500 }
+		# Survey colonized systems
+		country_event = { id = TNF.600 }
+	}
+}
+
+# Give planets
+# MEMBER SPACEPORTS LULZ
+country_event = {
+	id = TNF.50
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		while = {
+			limit = {
+				check_variable = {
+					which = "UnfairColonize"
+					value > 0
+				}
+			}
+			#ADVANCED_EMPIRE_MAX_EXTRA_COLONIES = 4,
+			#ADVANCED_EMPIRE_COLONY_DISTANCE = 50,
+			#ADVANCED_EMPIRE_COLONY_CHANCE = 50,
+			# Colonize another planet!
+			ensure_colonizable_planet = yes
+
+			if = {
+				limit = {
+					exists = event_target:unfairplanet
+					NOT = {
+						event_target:unfairplanet = {
+							is_same_value = root.capital_scope
+						}
+					}
+				}
+				ensure_ideal_planet = yes
+				ensure_planet_size = yes
+				ensure_system_clean = yes
+
+				event_target:unfairplanet = {
+					set_planet_flag = "folkunfair_picked"
+					set_owner = root
+					prevent_anomaly = yes
+					unfair_colonize_planet = yes
+					unfair_spaceport = yes
+				}
+			}
+
+			change_variable = {
+				which = "UnfairColonize"
+				value = -1
+			}
+		}
+	}
+}
+
+
+# Give minerals, energy, and influence
+# Unless we used boost.
+country_event = {
+	id = TNF.100
+	hide_window = yes
+	is_triggered_only = yes
+	# Give this even if they have the edict
+	#trigger = { NOT = { has_country_flag = "folkunfair_allow_edict" } }
+	immediate = {
+#		ADVANCED_EMPIRE_EXTRA_MINERALS_MIN = 500, # How much extra minerals does advanced empires start with?
+#		ADVANCED_EMPIRE_EXTRA_MINERALS_MAX = 1500,
+#		ADVANCED_EMPIRE_EXTRA_ENERGY_MIN = 300,   # How much extra energy does advanced empires start with?
+#		ADVANCED_EMPIRE_EXTRA_ENERGY_MAX = 900,
+#		ADVANCED_EMPIRE_EXTRA_INFLUENCE_MIN = 50,   # How much extra influence does advanced empires start with?
+#		ADVANCED_EMPIRE_EXTRA_INFLUENCE_MAX = 150,
+		switch = { # Lulz this is shorter code than an if statement basically, and more extensible later
+			trigger = energy
+			300 < { add_energy = 600 }
+		}
+		switch = {
+			trigger = minerals
+			300 < { add_minerals = 1000 }
+		}
+		switch = {
+			trigger = influence
+			100 < { add_influence = 100 }
+		}
+	}
+}
+
+# Technologies
+country_event = {
+	id = TNF.200
+	hide_window = yes
+	is_triggered_only = yes
+	# Give even if they get the edict.
+	immediate = {
+		set_country_flag = "unfair_givetechs"
+	}
+}
+
+# The reason we seperate it into its own event for AI empires
+# is simply to reduce the freeze that happens if you use "Boost everyone"
+# Not sure why it reduces the freeze time.
+country_event = {
+	id = TNF.201
+	hide_window = yes
+	trigger = {
+		has_country_flag = "unfair_givetechs"
+	}
+	immediate = {
+		remove_country_flag = "unfair_givetechs"
+		unfair_give_technologies = yes
+	}
+}
+
+#		ADVANCED_EMPIRE_EXTRA_WARSHIPS_MIN = 3,	# How many extra war ships do advanced empires start with?
+#		ADVANCED_EMPIRE_EXTRA_WARSHIPS_MAX = 7,
+# Give extra fleet
+country_event = {
+	id = TNF.300
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		count_owned_ships = {
+			limit = { is_ship_class = shipclass_military }
+			count < 4
+		}
+	}
+	immediate = {
+		create_fleet = {
+			effect = {
+				set_owner = root
+				set_location = root.capital_scope
+			}
+		}
+		last_created_fleet = {
+			create_ship = {
+				name = random
+				random_existing_design = "corvette"
+			}
+			create_ship = {
+				name = random
+				random_existing_design = "corvette"
+			}
+			create_ship = {
+				name = random
+				random_existing_design = "corvette"
+			}
+		}
+		while = {
+			count = 4
+			random = {
+			chance = 50
+				last_created_fleet = {
+					create_ship = {
+						name = random
+						random_existing_design = "corvette"
+					}
+				}
+			}
+		}
+	}
+}
+
+# Upgrade homeworld if necessary.
+country_event = {
+	id = TNF.400
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		capital_scope = {
+			unfair_upgrade_homeworld = yes
+		}
+	}
+}
+
+# Clean up planet modifiers
+country_event = {
+	id = TNF.500
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		every_owned_planet = {
+			unfair_remove_planetmodifiers = yes
+		}
+	}
+}
+
+# Survey relevant systems
+country_event = {
+	id = TNF.600
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		# Without this we will never get access to terraforming
+		set_country_flag = "homesystem_surveyed"
+
+		# Dont do every planet inside border, just where we
+		# have colonized. Surveying provides lots of nice stuff.
+		every_owned_planet = {
+			solar_system = {
+				every_system_planet = {
+					surveyed = {
+						set_surveyed = yes
+						surveyor = root
+					}
+					prevent_anomaly = yes
+					# terraforming_candidate_category
+					if = {
+						limit = {
+							NOT = { has_modifier = terraforming_candidate }
+							OR = {
+								is_planet_class = pc_barren
+								is_planet_class = pc_barren_cold
+							}
+						}
+						add_modifier = {
+							modifier = "terraforming_candidate"
+							days = -1
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Unused by addon, only for console cheats
+country_event = {
+	id = TNF.601
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		every_planet = {
+			limit = { is_inside_border = root }
+			surveyed = {
+				set_surveyed = yes
+				surveyor = root
+			}
+			prevent_anomaly = yes
+			# terraforming_candidate_category
+			if = {
+				limit = {
+					NOT = { has_modifier = terraforming_candidate }
+					OR = {
+						is_planet_class = pc_barren
+						is_planet_class = pc_barren_cold
+					}
+				}
+				add_modifier = {
+					modifier = "terraforming_candidate"
+					days = -1
+				}
+			}
+		}
+	}
+}
