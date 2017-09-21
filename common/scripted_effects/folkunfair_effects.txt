@@ -51,6 +51,7 @@ ensure_colonizable_planet = {
 				# So we look for anything above 10%.
 				any_planet = {
 					habitability = { who = root.species value > 0.1 }
+					NOT = { has_planet_flag = precursor_world }
 				}
 			}
 			# First, see if we find an ideal planet
@@ -63,6 +64,7 @@ ensure_colonizable_planet = {
 					}
 					is_colony = no
 					has_owner = no
+					NOT = { has_planet_flag = precursor_world }
 				}
 				set_planet_flag = "folkunfair_picked"
 				save_event_target_as = unfairplanet
@@ -84,6 +86,7 @@ ensure_colonizable_planet = {
 						habitability = { who = root.species value > 0.4 }
 						is_colony = no
 						has_owner = no
+						NOT = { has_planet_flag = precursor_world }
 					}
 					set_planet_flag = "folkunfair_picked"
 					save_event_target_as = unfairplanet
@@ -106,6 +109,7 @@ ensure_colonizable_planet = {
 						NOT = {
 							any_pop = { owner = { is_country_type = "default" } }
 						}
+						NOT = { has_planet_flag = precursor_world }
 					}
 					if = {
 						limit = { has_owner = yes }
@@ -137,6 +141,7 @@ ensure_ideal_planet = {
 		}
 		switch = {
 			trigger = ideal_planet_class
+			pc_machine = { event_target:unfairplanet = { change_pc = pc_machine } }
 			pc_continental = { event_target:unfairplanet = { change_pc = pc_continental } }
 			pc_ocean = { event_target:unfairplanet = { change_pc = pc_ocean } }
 			pc_desert = { event_target:unfairplanet = { change_pc = pc_desert } }
@@ -177,6 +182,9 @@ ensure_ideal_planet = {
 			default = {
 				event_target:unfairplanet = { change_pc = pc_gaia }
 			}
+		}
+		event_target:unfairplanet = {
+			reroll_deposits = yes
 		}
 	}
 }
@@ -252,94 +260,16 @@ unfair_colonize_planet = {
 			limit = { has_blocker = yes }
 			remove_blocker = yes
 		}
-		# ADVANCED_EMPIRE_COLONY_NUM_FARMS = 1
-		random_neighboring_tile = {
-			limit = { has_blocker = no has_building = no }
-			set_building = "building_hydroponics_farm_1"
-			add_deposit = d_farmland_deposit
-		}
-		# ADVANCED_EMPIRE_COLONY_NUM_POWER_PLANTS = 2
-		random_neighboring_tile = {
-			limit = { has_blocker = no has_building = no }
-			set_building = "building_power_plant_1"
-			add_deposit = d_energy_deposit
-		}
-		random_neighboring_tile = {
-			limit = { has_blocker = no has_building = no }
-			set_building = "building_power_plant_1"
-			add_deposit = d_energy_deposit
-		}
 	}
-	random_tile = {
-		limit = { has_blocker = no has_building = no }
-		add_deposit = d_farmland_deposit
-	}
-	#ADVANCED_EMPIRE_COLONY_POPS = 4
-	best_tile_for_pop = { create_pop = { species = owner_main_species ethos = root } }
-	best_tile_for_pop = { create_pop = { species = owner_main_species ethos = root } }
-	best_tile_for_pop = { create_pop = { species = owner_main_species ethos = root } }
-	best_tile_for_pop = { create_pop = { species = owner_main_species ethos = root } }
+	planet_event = { id = game_start.22 }
+	planet_event = { id = game_start.23 }
 }
 
 unfair_upgrade_homeworld = {
-#		ADVANCED_EMPIRE_EXTRA_POPS_MIN = 1,		# How many extra pops does advanced empires get on their homeworld?
-##		ADVANCED_EMPIRE_EXTRA_POPS_MAX = 3,
-	while = {
-		# From my testing it seems that they get from 1-4
-		# power plants, depending on perfect tile setup
-		# They will not remove blockers to add them.
-		count = 4
-		random_tile = {
-			limit = {
-				has_blocker = no
-				has_building = no
-				has_resource = {
-					type = energy
-					amount > 0
-				}
-				has_resource = {
-					type = minerals
-					amount = 0
-				}
-				has_resource = {
-					type = food
-					amount = 0
-				}
-				has_resource = {
-					type = society_research
-					amount = 0
-				}
-				has_resource = {
-					type = physics_research
-					amount = 0
-				}
-				has_resource = {
-					type = engineering_research
-					amount = 0
-				}
-				has_resource = {
-					type = sr_alien_pets
-					amount = 0
-				}
-				has_resource = {
-					type = sr_betharian
-					amount = 0
-				}
-			}
-			set_building = "building_power_plant_1"
-		}
-	}
-	if = {
-		limit = {
-			# Seems like 7 is the max we can start with
-			# 8 from 1.4.0
-			# AdvAI empires sometimes have 9
-			num_pops < 8
-		}
-		best_tile_for_pop = { create_pop = { species = owner_main_species ethos = root } }
-		best_tile_for_pop = { create_pop = { species = owner_main_species ethos = root } }
-	}
-
+	# game_start.20
+	clear_blockers = yes
+	planet_event = { id = game_start.22 }
+	planet_event = { id = game_start.23 }
 }
 
 unfair_remove_planetmodifiers = {
@@ -492,66 +422,10 @@ unfair_spaceport = {
 	}
 }
 
-
 unfair_give_technologies = {
 	# Here's what they get based on ingame inspection that is not
 	# from weapon type or starting tech.
-	# deflectors
-	if = { limit = { NOT = { has_technology = "tech_shields_1" } }
-		give_technology = {
-			tech = tech_shields_1
-			message = no
-		}
-	}
-	# orbital energy conversion
-	if = { limit = { NOT = { has_technology = "tech_solar_panel_network" } }
-		give_technology = {
-			tech = tech_solar_panel_network
-			message = no
-		}
-	}
-	# quantum theory
-	if = { limit = { NOT = { has_technology = "tech_physics_lab_1" } }
-		give_technology = {
-			tech = tech_physics_lab_1
-			message = no
-		}
-	}
-	# biodiversity studies
-	if = { limit = { NOT = { has_technology = "tech_biolab_1" } }
-		give_technology = {
-			tech = tech_biolab_1
-			message = no
-		}
-	}
-	# adaptive bureaucracy
-	if = { limit = { NOT = { has_technology = "tech_adaptive_bureaucracy" } }
-		give_technology = {
-			tech = tech_adaptive_bureaucracy
-			message = no
-		}
-	}
-	# new worlds protocol
-	if = { limit = { NOT = { has_technology = "tech_colonization_1" } }
-		give_technology = {
-			tech = tech_colonization_1
-			message = no
-		}
-	}
-	# nanomechanics
-	if = { limit = { NOT = { has_technology = "tech_engineering_lab_1" } }
-		give_technology = {
-			tech = tech_engineering_lab_1
-			message = no
-		}
-	}
-	# nanocomposite materials
-	if = { limit = { NOT = { has_technology = "tech_ship_armor_1" } }
-		give_technology = {
-			tech = tech_ship_armor_1
-			message = no
-		}
-	}
+	country_event = { id = game_start.6 }
 
 	# ALWAYS GIVE XENOLOGY BECAUSE IT SUCKS
 	if = { limit = { NOT = { has_technology = "tech_alien_life_studies" } }
@@ -618,7 +492,6 @@ unfair_give_technologies = {
 			tech = tech_power_plant_2
 			message = no
 		}
-
 
 		# Blocker techs
 		if = {
