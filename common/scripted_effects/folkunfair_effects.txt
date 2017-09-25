@@ -129,66 +129,6 @@ ensure_colonizable_planet = {
 	}
 }
 
-ensure_ideal_planet = {
-	if = {
-		limit = {
-			event_target:unfairplanet = {
-				is_ideal_planet_class = {
-					who = ROOT
-					status = no
-				}
-			}
-		}
-		switch = {
-			trigger = ideal_planet_class
-			pc_machine = { event_target:unfairplanet = { change_pc = pc_machine } }
-			pc_continental = { event_target:unfairplanet = { change_pc = pc_continental } }
-			pc_ocean = { event_target:unfairplanet = { change_pc = pc_ocean } }
-			pc_desert = { event_target:unfairplanet = { change_pc = pc_desert } }
-			pc_tropical = { event_target:unfairplanet = { change_pc = pc_tropical } }
-			pc_arid = { event_target:unfairplanet = { change_pc = pc_arid } }
-			pc_tundra = { event_target:unfairplanet = { change_pc = pc_tundra } }
-			pc_arctic = { event_target:unfairplanet = { change_pc = pc_arctic } }
-			pc_savannah = { event_target:unfairplanet = { change_pc = pc_savannah } }
-			pc_alpine = { event_target:unfairplanet = { change_pc = pc_alpine } }
-			pc_gas_giant = { event_target:unfairplanet = { change_pc = pc_gas_giant } }
-			pc_molten = { event_target:unfairplanet = { change_pc = pc_molten } }
-			pc_barren = { event_target:unfairplanet = { change_pc = pc_barren } }
-			pc_barren_cold = { event_target:unfairplanet = { change_pc = pc_barren_cold } }
-			pc_toxic = { event_target:unfairplanet = { change_pc = pc_toxic } }
-			pc_frozen = { event_target:unfairplanet = { change_pc = pc_frozen } }
-			pc_infested = { event_target:unfairplanet = { change_pc = pc_infested } }
-			pc_ai = { event_target:unfairplanet = { change_pc = pc_ai } }
-			pc_shielded = { event_target:unfairplanet = { change_pc = pc_shielded } }
-			pc_asteroid = { event_target:unfairplanet = { change_pc = pc_asteroid } }
-			pc_ammonia = { event_target:unfairplanet = { change_pc = pc_ammonia } }
-			pc_antarctic = { event_target:unfairplanet = { change_pc = pc_antarctic } }
-			pc_cascadian = { event_target:unfairplanet = { change_pc = pc_cascadian } }
-			pc_desertislands = { event_target:unfairplanet = { change_pc = pc_desertislands } }
-			pc_frozen_desert = { event_target:unfairplanet = { change_pc = pc_frozen_desert } }
-			pc_geothermal = { event_target:unfairplanet = { change_pc = pc_geothermal } }
-			pc_glacial = { event_target:unfairplanet = { change_pc = pc_glacial } }
-			pc_hadesert = { event_target:unfairplanet = { change_pc = pc_hadesert } }
-			pc_hajungle = { event_target:unfairplanet = { change_pc = pc_hajungle } }
-			pc_mangrove = { event_target:unfairplanet = { change_pc = pc_mangrove } }
-			pc_mesa = { event_target:unfairplanet = { change_pc = pc_mesa } }
-			pc_methane = { event_target:unfairplanet = { change_pc = pc_methane } }
-			pc_oasis = { event_target:unfairplanet = { change_pc = pc_oasis } }
-			pc_sandsea = { event_target:unfairplanet = { change_pc = pc_sandsea } }
-			pc_steppe = { event_target:unfairplanet = { change_pc = pc_steppe } }
-			pc_subarctic = { event_target:unfairplanet = { change_pc = pc_subarctic } }
-			pc_swamp = { event_target:unfairplanet = { change_pc = pc_swamp } }
-			pc_nuked = { event_target:unfairplanet = { change_pc = pc_nuked } }
-			default = {
-				event_target:unfairplanet = { change_pc = pc_gaia }
-			}
-		}
-		event_target:unfairplanet = {
-			reroll_deposits = yes
-		}
-	}
-}
-
 ensure_planet_size = {
 	while = {
 		limit = {
