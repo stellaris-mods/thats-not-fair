@@ -528,16 +528,15 @@ country_event = {
 					exists = event_target:unfairplanet
 					NOT = {
 						event_target:unfairplanet = {
-							is_same_value = root.capital_scope
+							is_same_value = ROOT.capital_scope
 						}
 					}
 				}
 				ensure_ideal_planet = yes
-				ensure_planet_size = yes
-				ensure_system_clean = yes
-
 				event_target:unfairplanet = {
 					set_planet_flag = "folkunfair_picked"
+					ensure_planet_size = yes
+					ensure_system_clean = yes
 					set_owner = root
 					prevent_anomaly = yes
 					unfair_colonize_planet = yes

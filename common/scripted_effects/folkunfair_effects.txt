@@ -134,7 +134,7 @@ ensure_ideal_planet = {
 		limit = {
 			event_target:unfairplanet = {
 				is_ideal_planet_class = {
-					who = root
+					who = ROOT
 					status = no
 				}
 			}
@@ -190,7 +190,6 @@ ensure_ideal_planet = {
 }
 
 ensure_planet_size = {
-	event_target:unfairplanet = {
 	while = {
 		limit = {
 			planet_size < 16
@@ -209,16 +208,14 @@ ensure_planet_size = {
 				}
 			}
 		}
-	} }
+	}
 }
 
 ensure_system_clean = {
-	event_target:unfairplanet = {
-		solar_system = {
-			every_fleet_in_system = {
-				limit = { owner = { is_hostile = root } }
-				delete_fleet = this
-			}
+	solar_system = {
+		every_fleet_in_system = {
+			limit = { owner = { is_hostile = root } }
+			delete_fleet = this
 		}
 	}
 }
