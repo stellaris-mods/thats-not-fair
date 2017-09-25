@@ -40,6 +40,7 @@ ensure_ideal_planet = {
 			pc_ai = { event_target:unfairplanet = { change_pc = pc_ai } }
 			pc_shielded = { event_target:unfairplanet = { change_pc = pc_shielded } }
 			pc_asteroid = { event_target:unfairplanet = { change_pc = pc_asteroid } }
+			pc_nuked = { event_target:unfairplanet = { change_pc = pc_nuked } }
 			pc_ammonia = { event_target:unfairplanet = { change_pc = pc_ammonia } }
 			pc_antarctic = { event_target:unfairplanet = { change_pc = pc_antarctic } }
 			pc_cascadian = { event_target:unfairplanet = { change_pc = pc_cascadian } }
@@ -57,7 +58,6 @@ ensure_ideal_planet = {
 			pc_steppe = { event_target:unfairplanet = { change_pc = pc_steppe } }
 			pc_subarctic = { event_target:unfairplanet = { change_pc = pc_subarctic } }
 			pc_swamp = { event_target:unfairplanet = { change_pc = pc_swamp } }
-			pc_nuked = { event_target:unfairplanet = { change_pc = pc_nuked } }
 			default = {
 				event_target:unfairplanet = { change_pc = pc_gaia }
 			}
