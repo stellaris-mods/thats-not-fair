@@ -28,11 +28,11 @@ country_event = {
 
 	immediate = {
 		set_variable = {
-			which = FolkUnfairPlanetCount
+			which = "FolkUnfairPlanetCount"
 			value = 0
 		}
 		set_variable = {
-			which = FolkUnfairAICount
+			which = "FolkUnfairAICount"
 			value = 0
 		}
 		every_country = {
@@ -53,7 +53,7 @@ country_event = {
 					}
 					root = {
 						change_variable = {
-							which = FolkUnfairAICount
+							which = "FolkUnfairAICount"
 							value = 1 # +1
 						}
 					}
@@ -64,7 +64,7 @@ country_event = {
 						2 = {
 							root = {
 								change_variable = {
-									which = FolkUnfairPlanetCount
+									which = "FolkUnfairPlanetCount"
 									value = 2
 								}
 							}
@@ -72,7 +72,7 @@ country_event = {
 						3 = {
 							root = {
 								change_variable = {
-									which = FolkUnfairPlanetCount
+									which = "FolkUnfairPlanetCount"
 									value = 3
 								}
 							}
@@ -80,7 +80,7 @@ country_event = {
 						4 = {
 							root = {
 								change_variable = {
-									which = FolkUnfairPlanetCount
+									which = "FolkUnfairPlanetCount"
 									value = 4
 								}
 							}
@@ -88,7 +88,7 @@ country_event = {
 						default = {
 							root = {
 								change_variable = {
-									which = FolkUnfairPlanetCount
+									which = "FolkUnfairPlanetCount"
 									value = 5
 								}
 							}
@@ -99,8 +99,8 @@ country_event = {
 			}
 		}
 		divide_variable = {
-			which = FolkUnfairPlanetCount
-			value = FolkUnfairAICount
+			which = "FolkUnfairPlanetCount"
+			value = "FolkUnfairAICount"
 		}
 	}
 }
@@ -132,7 +132,7 @@ country_event = {
 	desc = {
 		trigger = {
 			check_variable = {
-				which = FolkUnfairPlanetCount
+				which = "FolkUnfairPlanetCount"
 				value < 1.01
 			}
 		}
@@ -141,7 +141,7 @@ country_event = {
 	desc = {
 		trigger = {
 			check_variable = {
-				which = FolkUnfairPlanetCount
+				which = "FolkUnfairPlanetCount"
 				value > 1
 			}
 		}
@@ -537,7 +537,7 @@ country_event = {
 					set_planet_flag = "folkunfair_picked"
 					ensure_planet_size = yes
 					ensure_system_clean = yes
-					set_owner = root
+					set_owner = ROOT
 					prevent_anomaly = yes
 					unfair_colonize_planet = yes
 					unfair_spaceport = yes
@@ -625,8 +625,8 @@ country_event = {
 	immediate = {
 		create_fleet = {
 			effect = {
-				set_owner = root
-				set_location = root.capital_scope
+				set_owner = ROOT
+				set_location = ROOT.capital_scope
 			}
 		}
 		last_created_fleet = {
@@ -698,16 +698,16 @@ country_event = {
 				every_system_planet = {
 					surveyed = {
 						set_surveyed = yes
-						surveyor = root
+						surveyor = ROOT
 					}
 					prevent_anomaly = yes
 					# terraforming_candidate_category
 					if = {
 						limit = {
-							NOT = { has_modifier = terraforming_candidate }
+							NOT = { has_modifier = "terraforming_candidate" }
 							OR = {
-								is_planet_class = pc_barren
-								is_planet_class = pc_barren_cold
+								is_planet_class = "pc_barren"
+								is_planet_class = "pc_barren_cold"
 							}
 						}
 						add_modifier = {
@@ -728,19 +728,19 @@ country_event = {
 	is_triggered_only = yes
 	immediate = {
 		every_planet = {
-			limit = { is_inside_border = root }
+			limit = { is_inside_border = ROOT }
 			surveyed = {
 				set_surveyed = yes
-				surveyor = root
+				surveyor = ROOT
 			}
 			prevent_anomaly = yes
 			# terraforming_candidate_category
 			if = {
 				limit = {
-					NOT = { has_modifier = terraforming_candidate }
+					NOT = { has_modifier = "terraforming_candidate" }
 					OR = {
-						is_planet_class = pc_barren
-						is_planet_class = pc_barren_cold
+						is_planet_class = "pc_barren"
+						is_planet_class = "pc_barren_cold"
 					}
 				}
 				add_modifier = {

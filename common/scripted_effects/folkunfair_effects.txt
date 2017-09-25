@@ -9,16 +9,16 @@ ensure_colonizable_planet = {
 			# Prevents error.log entry on first run through
 			exists = event_target:unfairplanet
 		}
-		root.capital_scope = { save_event_target_as = unfairplanet }
+		ROOT.capital_scope = { save_event_target_as = unfairplanet }
 	}
 	# Or, I have not found a way to clear it, at least.
 	# And using variables to track if the event target is set would be crap.
 
-	root.capital_scope = {
+	ROOT.capital_scope = {
 		closest_system = {
 			limit = {
 				NOT = {
-					is_same_value = root.capital_scope.solar_system
+					is_same_value = ROOT.capital_scope.solar_system
 					has_star_flag = "folkunfair_picked"
 					has_star_flag = "hostile_system"
 					has_star_flag = "sanctuary_system"
@@ -50,8 +50,8 @@ ensure_colonizable_planet = {
 				# tertiary habitability is 20%, and nuked planets etc are 10%.
 				# So we look for anything above 10%.
 				any_planet = {
-					habitability = { who = root.species value > 0.1 }
-					NOT = { has_planet_flag = precursor_world }
+					habitability = { who = ROOT.species value > 0.1 }
+					NOT = { has_planet_flag = "precursor_world" }
 				}
 			}
 			# First, see if we find an ideal planet
@@ -59,12 +59,12 @@ ensure_colonizable_planet = {
 			random_system_planet = {
 				limit = {
 					is_ideal_planet_class = {
-						who = root
+						who = ROOT
 						status = yes
 					}
 					is_colony = no
 					has_owner = no
-					NOT = { has_planet_flag = precursor_world }
+					NOT = { has_planet_flag = "precursor_world" }
 				}
 				set_planet_flag = "folkunfair_picked"
 				save_event_target_as = unfairplanet
@@ -83,10 +83,10 @@ ensure_colonizable_planet = {
 				# We need to convert one of the planets to our type
 				random_system_planet = {
 					limit = {
-						habitability = { who = root.species value > 0.4 }
+						habitability = { who = ROOT.species value > 0.4 }
 						is_colony = no
 						has_owner = no
-						NOT = { has_planet_flag = precursor_world }
+						NOT = { has_planet_flag = "precursor_world" }
 					}
 					set_planet_flag = "folkunfair_picked"
 					save_event_target_as = unfairplanet
@@ -109,7 +109,7 @@ ensure_colonizable_planet = {
 						NOT = {
 							any_pop = { owner = { is_country_type = "default" } }
 						}
-						NOT = { has_planet_flag = precursor_world }
+						NOT = { has_planet_flag = "precursor_world" }
 					}
 					if = {
 						limit = { has_owner = yes }
@@ -154,8 +154,8 @@ ensure_planet_size = {
 ensure_system_clean = {
 	solar_system = {
 		every_fleet_in_system = {
-			limit = { owner = { is_hostile = root } }
-			delete_fleet = this
+			limit = { owner = { is_hostile = ROOT } }
+			delete_fleet = THIS
 		}
 	}
 }
@@ -211,8 +211,8 @@ unfair_upgrade_homeworld = {
 
 unfair_remove_planetmodifiers = {
 	if = {
-		limit = { has_modifier = holy_planet }
-		remove_modifier = holy_planet
+		limit = { has_modifier = "holy_planet" }
+		remove_modifier = "holy_planet"
 	}
 	if = {
 		limit = { has_planet_flag = "stone_age_primitives" }
@@ -327,30 +327,30 @@ unfair_remove_planetmodifiers = {
 
 # All advanced AIs get spaceports on their new planets
 unfair_spaceport = {
-	destroy_fleet = spaceport
-	root = {
+	delete_fleet = spaceport
+	ROOT = {
 		switch = {
 			trigger = has_technology
 			tech_mass_drivers_1 = {
-				prev = {
+				PREV = {
 					create_spaceport = {
-						owner = root
+						owner = ROOT
 						initial_module = "projectile_weapon"
 					}
 				}
 			}
 			tech_lasers_1 = {
-				prev = {
+				PREV = {
 					create_spaceport = {
-						owner = root
+						owner = ROOT
 						initial_module = "laser_weapon"
 					}
 				}
 			}
 			tech_missiles_1 = {
-				prev = {
+				PREV = {
 					create_spaceport = {
-						owner = root
+						owner = ROOT
 						initial_module = "missile_weapon"
 					}
 				}
@@ -367,7 +367,7 @@ unfair_give_technologies = {
 	# ALWAYS GIVE XENOLOGY BECAUSE IT SUCKS
 	if = { limit = { NOT = { has_technology = "tech_alien_life_studies" } }
 		give_technology = {
-			tech = tech_alien_life_studies
+			tech = "tech_alien_life_studies"
 			message = no
 		}
 	}
@@ -378,55 +378,55 @@ unfair_give_technologies = {
 		}
 		# powered exoskeletons
 		give_technology = {
-			tech = tech_powered_exoskeletons
+			tech = "tech_powered_exoskeletons"
 			message = no
 		}
 
 		# improved spaceport
 		give_technology = {
-			tech = tech_spaceport_2
+			tech = "tech_spaceport_2"
 			message = no
 		}
 
 		# geothermal fracking
 		give_technology = {
-			tech = tech_mining_network_2
+			tech = "tech_mining_network_2"
 			message = no
 		}
 
 		# orbital hydroponics
 		give_technology = {
-			tech = tech_orbital_hydroponics
+			tech = "tech_orbital_hydroponics"
 			message = no
 		}
 
 		# eco simulation
 		give_technology = {
-			tech = tech_hydroponics
+			tech = "tech_hydroponics"
 			message = no
 		}
 
 		# centralized command
 		give_technology = {
-			tech = tech_centralized_command
+			tech = "tech_centralized_command"
 			message = no
 		}
 
 		# global energy management
 		give_technology = {
-			tech = tech_power_hub_1
+			tech = "tech_power_hub_1"
 			message = no
 		}
 
 		# Gravitic Sensors
 		give_technology = {
-			tech = tech_sensors_2
+			tech = "tech_sensors_2"
 			message = no
 		}
 
 		# field modulation
 		give_technology = {
-			tech = tech_power_plant_2
+			tech = "tech_power_plant_2"
 			message = no
 		}
 
@@ -434,56 +434,56 @@ unfair_give_technologies = {
 		if = {
 			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_mountain_range" } } }
 			give_technology = {
-				tech = tech_tb_mountain_range
+				tech = "tech_tb_mountain_range"
 				message = no
 			}
 		}
 		if = {
 			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_active_volcano" } } }
 			give_technology = {
-				tech = tech_tb_volcano
+				tech = "tech_tb_volcano"
 				message = no
 			}
 		}
 		if = {
 			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_dense_jungle" } } }
 			give_technology = {
-				tech = tech_tb_dense_jungle
+				tech = "tech_tb_dense_jungle"
 				message = no
 			}
 		}
 		if = {
 			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_quicksand_basin" } } }
 			give_technology = {
-				tech = tech_tb_quicksand_basin
+				tech = "tech_tb_quicksand_basin"
 				message = no
 			}
 		}
 		if = {
 			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_noxious_swamp" } } }
 			give_technology = {
-				tech = tech_tb_noxious_swamp
+				tech = "tech_tb_noxious_swamp"
 				message = no
 			}
 		}
 		if = {
 			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_massive_glacier" } } }
 			give_technology = {
-				tech = tech_tb_massive_glacier
+				tech = "tech_tb_massive_glacier"
 				message = no
 			}
 		}
 		if = {
 			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_toxic_kelp" } } }
 			give_technology = {
-				tech = tech_tb_toxic_kelp
+				tech = "tech_tb_toxic_kelp"
 				message = no
 			}
 		}
 		if = {
 			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_deep_sinkhole" } } }
 			give_technology = {
-				tech = tech_tb_deep_sinkhole
+				tech = "tech_tb_deep_sinkhole"
 				message = no
 			}
 		}
