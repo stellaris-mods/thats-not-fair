@@ -1,4 +1,13 @@
 
+#
+# There are several ways you can override this effect in another mod:
+# 1. Declare ensure_ideal_planet = { } in any file
+# 2. Overwrite the whole file.
+#
+# Which way is best depends where you are in the load order
+# in relation to TNF.
+#
+
 ensure_ideal_planet = {
 	if = {
 		limit = {
