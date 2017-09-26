@@ -6,8 +6,6 @@
 
 # Find system within borders
 tnf_find_system_priority_1 = {
-	# XXX I'm quite sure this will fail almost every time,
-	# XXX because the borders are not extended until the next day.
 	random_system_within_border = {
 		limit = {
 			NOT = { is_same_value = ROOT.capital_scope.solar_system }
@@ -23,7 +21,7 @@ tnf_find_system_priority_2 = {
 	capital_scope = {
 		random_system = {
 			limit = {
-				NOT = { is_same_value = PREV }
+				NOT = { is_same_value = PREV.solar_system }
 				distance = {
 					source = PREV
 					max_distance = 80
@@ -37,11 +35,73 @@ tnf_find_system_priority_2 = {
 }
 
 # Nevermind, just spawn system
+# ZZZ Don't use random_system_within_border because our borders are not extended
+# ZZZ until a day has passed ingame, I think. I have not tested this, specifically.
 tnf_find_system_priority_3 = {
+	# First, try to find a owned system that is fairly close to our capital
 	random_owned_planet = {
-		limit = { NOT = { has_planet_flag = "tnf_spawned_from" } }
-		set_planet_flag = "tnf_spawned_from"
-		log = "[root.GetName]: System spawning from [this.GetName]."
+		limit = {
+			solar_system = {
+				NOT = { has_star_flag = "tnf_spawned_from" }
+				distance = { source = ROOT.capital_scope max_distance = 40 }
+			}
+		}
+		solar_system = {
+			log = "[root.GetName]: System spawning on first try from [this.GetName]."
+			set_star_flag = "tnf_spawn_here"
+		}
+	}
+
+	# Beware, the if-statements below are nested.
+	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_here" } } }
+		# Second, find any system that is fairly close to our capital
+		random_system = {
+			limit = {
+				NOT = { has_star_flag = "tnf_spawned_from" }
+				distance = { source = ROOT.capital_scope max_distance = 40 }
+			}
+			log = "[root.GetName]: System spawning on second try from [this.GetName]."
+			set_star_flag = "tnf_spawn_here"
+		}
+	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_here" } } }
+		# Third, expand search distance from #2
+		random_system = {
+			limit = {
+				NOT = { has_star_flag = "tnf_spawned_from" }
+				distance = { source = ROOT.capital_scope max_distance = 60 }
+			}
+			log = "[root.GetName]: System spawning on third try from [this.GetName]."
+			set_star_flag = "tnf_spawn_here"
+		}
+	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_here" } } }
+		# Fourth, try 40 again but just ignore the flag
+		random_system = {
+			limit = { distance = { source = ROOT.capital_scope max_distance = 40 } }
+			log = "[root.GetName]: System spawning on fourth try from [this.GetName]."
+			set_star_flag = "tnf_spawn_here"
+		}
+	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_here" } } }
+		# Fifth, try 60 again but just ignore the flag
+		random_system = {
+			limit = { distance = { source = ROOT.capital_scope max_distance = 60 } }
+			log = "[root.GetName]: System spawning on fifth try from [this.GetName]."
+			set_star_flag = "tnf_spawn_here"
+		}
+	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_here" } } }
+		# Sixth, just spawn around capital
+		# The reason we only do this as a "last" resort, is because the spawn_system
+		# command always "walks" in the same direction. So if we end up here
+		# twice in a row, that means the systems will be directly on top of eachother.
+		capital_scope = { solar_system = {
+			log = "[root.GetName]: System spawning on sixth try from [this.GetName]."
+			set_star_flag = "tnf_spawn_here"
+		} }
+	} } } } }
+
+	random_system = {
+		limit = { has_star_flag = "tnf_spawn_here" }
+		remove_star_flag = "tnf_spawn_here"
+		set_star_flag = "tnf_spawned_from"
 		random_list = { # The initializers all set tnf_picked_system
 			1 = { spawn_system = { min_distance = 20 max_distance = 40 initializer = "tnf_init_01" } }
 			1 = { spawn_system = { min_distance = 20 max_distance = 40 initializer = "tnf_init_02" } }
@@ -116,10 +176,28 @@ tnf_find_planet_priority_5 = {
 		location = event_target:tnf_spawn_planet_at
 		orbit_angle_offset = -30
 		orbit_distance_offset = 20
-		size = 18
+		size = { min = 16 max = 25 }
 		has_ring = no
 		init_effect = {
-			reroll_deposits = yes # ZZZ Not sure if this is necessary.
+			# Using a semilarge list of names below just to try and prevent
+			# any country from getting the same one twice.
+			random_list = { # set_name = random does not work as of 1.8
+				1 = { set_name = "NAME_The_Mistake" }
+				1 = { set_name = "NAME_Tumbleweed" }
+				1 = { set_name = "NAME_Unity" }
+				1 = { set_name = "NAME_Thelet" }
+				1 = { set_name = "NAME_Sirius" }
+				1 = { set_name = "Kappa" }
+				1 = { set_name = "November" }
+				1 = { set_name = "Sierra" }
+				1 = { set_name = "Tau" }
+				1 = { set_name = "Hippos" }
+				1 = { set_name = "Clowns" }
+				1 = { set_name = "Bravo" }
+				1 = { set_name = "Unfair" }
+				1 = { set_name = "Vagabonds" }
+				1 = { set_name = "Betelgeuse" }
+			}
 			set_planet_flag = "tnf_picked_planet"
 		}
 	}
@@ -171,23 +249,76 @@ ensure_colonizable_planet = {
 	}
 }
 
-ensure_planet_size = {
-	while = {
-		limit = {
-			planet_size < 16
+tnf_random_tile_resource = {
+	random_tile = {
+		random_list = {
+			33 = { add_deposit = d_mineral_deposit }
+			33 = { add_deposit = d_energy_deposit }
+			33 = { add_deposit = d_farmland_deposit }
 		}
-		change_planet_size < 1
-		random_tile = {
-			random_list = {
-				34 = {
-					add_deposit = d_mineral_deposit
-				}
-				33 = {
-					add_deposit = d_energy_deposit
-				}
-				33 = {
-					add_deposit = d_farmland_deposit
-				}
+	}
+}
+
+ensure_planet_size = {
+	random_list = {
+		1 = {
+			while = { limit = { planet_size < 16 }
+				change_planet_size < 1
+				tnf_random_tile_resource = yes
+			}
+		}
+		1 = {
+			while = { limit = { planet_size < 17 }
+				change_planet_size < 1
+				tnf_random_tile_resource = yes
+			}
+		}
+		1 = {
+			while = { limit = { planet_size < 18 }
+				change_planet_size < 1
+				tnf_random_tile_resource = yes
+			}
+		}
+		1 = {
+			while = { limit = { planet_size < 19 }
+				change_planet_size < 1
+				tnf_random_tile_resource = yes
+			}
+		}
+		1 = {
+			while = { limit = { planet_size < 20 }
+				change_planet_size < 1
+				tnf_random_tile_resource = yes
+			}
+		}
+		1 = {
+			while = { limit = { planet_size < 21 }
+				change_planet_size < 1
+				tnf_random_tile_resource = yes
+			}
+		}
+		1 = {
+			while = { limit = { planet_size < 22 }
+				change_planet_size < 1
+				tnf_random_tile_resource = yes
+			}
+		}
+		1 = {
+			while = { limit = { planet_size < 23 }
+				change_planet_size < 1
+				tnf_random_tile_resource = yes
+			}
+		}
+		1 = {
+			while = { limit = { planet_size < 24 }
+				change_planet_size < 1
+				tnf_random_tile_resource = yes
+			}
+		}
+		1 = {
+			while = { limit = { planet_size < 25 }
+				change_planet_size < 1
+				tnf_random_tile_resource = yes
 			}
 		}
 	}
@@ -550,58 +681,88 @@ unfair_give_technologies = {
 	}
 }
 
+# XXX This should probably be optimized slightly.
 ensure_planet_food = {
-	set_variable = { which = "TNFPlanetFood" value = 0 }
-	set_variable = { which = "TNFNumPops" value = 0 }
-	every_tile = {
-		limit = { has_grown_pop = yes }
-		# Too bad we can't switch on pop_produces_resource
-		# ZZZ Remember that pops produce fractional resources with modifiers.
-		if = { limit = { pop = { pop_produces_resource { type = food amount > 5.9 } } }
-			PREV = { change_variable = { which = "TNFPlanetFood" value = 6 } }
-		else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 4.9 } } }
-			PREV = { change_variable = { which = "TNFPlanetFood" value = 5 } }
-		else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 3.9 } } }
-			PREV = { change_variable = { which = "TNFPlanetFood" value = 4 } }
-		else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 2.9 } } }
-			PREV = { change_variable = { which = "TNFPlanetFood" value = 3 } }
-		else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 1.9 } } }
-			PREV = { change_variable = { which = "TNFPlanetFood" value = 2 } }
-		else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 0.9 } } }
-			PREV = { change_variable = { which = "TNFPlanetFood" value = 1 } }
-		} } } } } } } } } } }
-		# We need to count the pops because we can't compare a trigger to a variable
-		PREV = { change_variable = { which = "TNFNumPops" value = 1 } }
-	}
+	tnf_move_pop_for_food = yes
+	tnf_move_pop_for_food = yes
+	#tnf_move_pop_for_food = yes
+}
+
+# XXX I don't think the pop_produces_resource trigger below actually updates.
+# XXX Need to check this.
+tnf_move_pop_for_food = {
 	if = {
-		limit = {
-			check_variable = { which = "TNFNumPops" value > "TNFPlanetFood" }
+		limit = { # Dont do anything below unless there's a free tile with food available.
 			any_tile = {
 				tnf_tile_spawnable = yes
 				has_resource = { type = food amount > 0 }
 			}
 		}
-		# This might not actually remove any pops, if for some weird reason
-		# they all produce some food. I do declare, I don't care.
-		random_owned_pop = {
-			limit = { pop_produces_resource { type = food amount = 0 } }
-			kill_pop = yes
+		# We need to start with 1, because we cant compare with zero later (variables that are 0
+		# are simply deleted in the backend. At least they do not show in tooltips.)
+		# XXX That said, I should try an explicit test where I compare against variables
+		# XXX that don't exist.
+		# XXX Should also test a localisation string where I reference two variables, one
+		# XXX set to 0 and one that isn't set.
+		set_variable = { which = "TNFPlanetFood" value = 1 }
+		set_variable = { which = "TNFNumPops" value = 1 }
+		every_tile = {
+			limit = { has_grown_pop = yes }
+			# Too bad we can't switch on pop_produces_resource
+			# ZZZ Remember that pops produce fractional resources with modifiers.
+			if = { limit = { pop = { pop_produces_resource { type = food amount > 5.9 } } }
+				PREV = { change_variable = { which = "TNFPlanetFood" value = 6 } }
+			else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 4.9 } } }
+				PREV = { change_variable = { which = "TNFPlanetFood" value = 5 } }
+			else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 3.9 } } }
+				PREV = { change_variable = { which = "TNFPlanetFood" value = 4 } }
+			else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 2.9 } } }
+				PREV = { change_variable = { which = "TNFPlanetFood" value = 3 } }
+			else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 1.9 } } }
+				PREV = { change_variable = { which = "TNFPlanetFood" value = 2 } }
+			else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 0.9 } } }
+				PREV = { change_variable = { which = "TNFPlanetFood" value = 1 } }
+			} } } } } } } } } } }
+			# We need to count the pops because we can't compare a trigger to a variable
+			PREV = { change_variable = { which = "TNFNumPops" value = 1 } }
 		}
 		if = {
 			limit = {
+				check_variable = { which = "TNFNumPops" value > "TNFPlanetFood" }
 				any_tile = {
 					tnf_tile_spawnable = yes
-					has_resource = { type = food amount > 1 }
+					has_resource = { type = food amount > 0 }
 				}
 			}
-			random_tile = {
+			# This might not actually remove any pops, if for some weird reason
+			# they all produce some food. I do declare, I don't care.
+			random_owned_pop = {
+				limit = { pop_produces_resource { type = food amount = 0 } }
+				kill_pop = yes
+			}
+
+			# Try to find a tile with 3, 2, and 1 food, in that order
+			if = {
 				limit = {
-					tnf_tile_spawnable = yes
-					has_resource = { type = food amount > 1 }
+					any_tile = {
+						tnf_tile_spawnable = yes
+						has_resource = { type = food amount > 2 }
+					}
 				}
-				create_pop = { species = owner_main_species ethos = ROOT }
-			}
-			else = {
+				random_tile = {
+					limit = {
+						tnf_tile_spawnable = yes
+						has_resource = { type = food amount > 2 }
+					}
+					create_pop = { species = owner_main_species ethos = ROOT }
+				}
+			else = { if = {
+				limit = {
+					any_tile = {
+						tnf_tile_spawnable = yes
+						has_resource = { type = food amount > 1 }
+					}
+				}
 				random_tile = {
 					limit = {
 						tnf_tile_spawnable = yes
@@ -609,8 +770,17 @@ ensure_planet_food = {
 					}
 					create_pop = { species = owner_main_species ethos = ROOT }
 				}
-			}
+			else = {
+				random_tile = {
+					limit = {
+						tnf_tile_spawnable = yes
+						has_resource = { type = food amount > 0 }
+					}
+					create_pop = { species = owner_main_species ethos = ROOT }
+				}
+			} } } }
+			log = "[root.GetName]: [this.GetName] did not produce enough food, so we moved a pop."
 		}
-		log = "[root.GetName]: [this.GetName] did not produce enough food, so we moved a pop."
+
 	}
 }
