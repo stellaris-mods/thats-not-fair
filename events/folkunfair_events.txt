@@ -530,6 +530,7 @@ country_event = {
 					set_owner = ROOT
 					prevent_anomaly = yes
 					unfair_colonize_planet = yes
+					ensure_planet_food = yes
 					unfair_spaceport = yes
 				}
 			}

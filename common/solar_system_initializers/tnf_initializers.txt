@@ -1,7 +1,7 @@
 
 # This is just a copy of the basic_init_x initializers
-# with the usage keys removed, and the tnf_spawn_system flag added.
-# The tnf_spawn_system flag is removed immediately after, it's
+# with the usage keys removed, and the tnf_picked_system flag added.
+# The tnf_picked_system flag is removed immediately after, it's
 # only used so that we can scope to the system after spawning it.
 #
 # The tnf_forcefully_spawned is not removed.
@@ -13,7 +13,7 @@
 tnf_init_01 = {
 	class = "rl_standard_stars"
 
-	flags = { tnf_spawn_system tnf_forcefully_spawned }
+	flags = { tnf_picked_system tnf_forcefully_spawned }
 
 	planet = {
 		count = 1
@@ -46,7 +46,7 @@ tnf_init_02 = {
 	class = "rl_standard_stars"
 	asteroids_distance = 95
 
-	flags = { tnf_spawn_system tnf_forcefully_spawned }
+	flags = { tnf_picked_system tnf_forcefully_spawned }
 
 	planet = {
 		count = 1
@@ -93,7 +93,7 @@ tnf_init_02 = {
 tnf_init_03 = {
 	class = "rl_standard_stars"
 
-	flags = { tnf_spawn_system tnf_forcefully_spawned }
+	flags = { tnf_picked_system tnf_forcefully_spawned }
 
 	planet = {
 		count = 1
@@ -143,7 +143,7 @@ tnf_init_04 = {
 	class = "rl_standard_stars"
 	asteroids_distance = 120
 
-	flags = { tnf_spawn_system tnf_forcefully_spawned }
+	flags = { tnf_picked_system tnf_forcefully_spawned }
 
 	planet = {
 		count = 1

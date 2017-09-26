@@ -6,12 +6,15 @@
 
 # Find system within borders
 tnf_find_system_priority_1 = {
+	# XXX I'm quite sure this will fail almost every time,
+	# XXX because the borders are not extended until the next day.
 	random_system_within_border = {
 		limit = {
 			NOT = { is_same_value = ROOT.capital_scope.solar_system }
 			tnf_potential_system = yes
 		}
-		set_star_flag = "tnf_spawn_system"
+		log = "[root.GetName]: System [this.GetName] found within borders."
+		set_star_flag = "tnf_picked_system"
 	}
 }
 
@@ -23,23 +26,27 @@ tnf_find_system_priority_2 = {
 				NOT = { is_same_value = PREV }
 				distance = {
 					source = PREV
-					max_distance = 100
+					max_distance = 80
 				}
 				tnf_potential_system = yes
 			}
-			set_star_flag = "tnf_spawn_system"
+			log = "[root.GetName]: System [this.GetName] found within 80 distance of capital."
+			set_star_flag = "tnf_picked_system"
 		}
 	}
 }
 
 # Nevermind, just spawn system
 tnf_find_system_priority_3 = {
-	capital_scope = {
-		random_list = { # The initializers all set tnf_spawn_system
-			1 = { spawn_system = { min_distance = 20 max_distance = 60 initializer = "tnf_init_01" } }
-			1 = { spawn_system = { min_distance = 20 max_distance = 60 initializer = "tnf_init_02" } }
-			1 = { spawn_system = { min_distance = 20 max_distance = 60 initializer = "tnf_init_03" } }
-			1 = { spawn_system = { min_distance = 20 max_distance = 60 initializer = "tnf_init_04" } }
+	random_owned_planet = {
+		limit = { NOT = { has_planet_flag = "tnf_spawned_from" } }
+		set_planet_flag = "tnf_spawned_from"
+		log = "[root.GetName]: System spawning from [this.GetName]."
+		random_list = { # The initializers all set tnf_picked_system
+			1 = { spawn_system = { min_distance = 20 max_distance = 40 initializer = "tnf_init_01" } }
+			1 = { spawn_system = { min_distance = 20 max_distance = 40 initializer = "tnf_init_02" } }
+			1 = { spawn_system = { min_distance = 20 max_distance = 40 initializer = "tnf_init_03" } }
+			1 = { spawn_system = { min_distance = 20 max_distance = 40 initializer = "tnf_init_04" } }
 		}
 	}
 }
@@ -54,8 +61,8 @@ tnf_find_planet_priority_1 = {
 				status = yes
 			}
 		}
-		set_planet_flag = "folkunfair_picked"
-		save_event_target_as = unfairplanet
+		log = "[root.GetName]: Planet priority 1 found."
+		set_planet_flag = "tnf_picked_planet"
 	}
 }
 
@@ -69,8 +76,8 @@ tnf_find_planet_priority_2 = {
 				value > 0.50
 			}
 		}
-		set_planet_flag = "folkunfair_picked"
-		save_event_target_as = unfairplanet
+		log = "[root.GetName]: Planet priority 2 found."
+		set_planet_flag = "tnf_picked_planet"
 	}
 }
 
@@ -84,8 +91,8 @@ tnf_find_planet_priority_3 = {
 				value > 0.15
 			}
 		}
-		set_planet_flag = "folkunfair_picked"
-		save_event_target_as = unfairplanet
+		log = "[root.GetName]: Planet priority 3 found."
+		set_planet_flag = "tnf_picked_planet"
 	}
 }
 
@@ -95,14 +102,14 @@ tnf_find_planet_priority_4 = {
 		limit = {
 			tnf_potential_planet = yes
 		}
-		set_planet_flag = "folkunfair_picked"
-		save_event_target_as = unfairplanet
+		log = "[root.GetName]: Planet priority 4 found."
+		set_planet_flag = "tnf_picked_planet"
 	}
 }
 
 # No potential planet, so make one.
 tnf_find_planet_priority_5 = {
-	log = "Spawning planet."
+	log = "[root.GetName]: Planet priority 5: Spawning new planet in [this.GetName]."
 	random_system_planet = { save_event_target_as = tnf_spawn_planet_at }
 	spawn_planet = {
 		class = random_colonizable
@@ -113,8 +120,7 @@ tnf_find_planet_priority_5 = {
 		has_ring = no
 		init_effect = {
 			reroll_deposits = yes # ZZZ Not sure if this is necessary.
-			set_planet_flag = "folkunfair_picked"
-			save_event_target_as = unfairplanet
+			set_planet_flag = "tnf_picked_planet"
 		}
 	}
 }
@@ -123,37 +129,44 @@ tnf_find_planet_priority_5 = {
 ensure_colonizable_planet = {
 	# Step 1: Pick system
 	tnf_find_system_priority_1 = yes
-	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_system" } } }
-		log = "Locating system for [root.GetName], did not find one inside borders."
+	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_picked_system" } } }
 		tnf_find_system_priority_2 = yes
 	}
-	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_system" } } }
-		log = "Locating system for [root.GetName], did not find one within 100 distance units."
+	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_picked_system" } } }
 		tnf_find_system_priority_3 = yes
 	}
-	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_system" } } }
-		log = "WARNING: Locating system for [root.GetName], did not find one after forcefully spawning."
+	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_picked_system" } } }
+		log = "[root.GetName]: ERROR: Did not find any viable solar system."
 	}
 
 	# Step 2: Pick planet
 	random_system = {
-		limit = { has_star_flag = "tnf_spawn_system" }
-		set_star_flag = "folkunfair_picked"
-		remove_star_flag = "tnf_spawn_system"
+		limit = { has_star_flag = "tnf_picked_system" }
+		set_star_flag = "tnf_ignore_system"
+		remove_star_flag = "tnf_picked_system"
 
 		# ZZZ any_planet{} checks within system scope
 		tnf_find_planet_priority_1 = yes
-		if = { limit = { NOT = { any_planet = { has_planet_flag = "folkunfair_picked" } } }
+		if = { limit = { NOT = { any_planet = { has_planet_flag = "tnf_picked_planet" } } }
 			tnf_find_planet_priority_2 = yes
 		}
-		if = { limit = { NOT = { any_planet = { has_planet_flag = "folkunfair_picked" } } }
+		if = { limit = { NOT = { any_planet = { has_planet_flag = "tnf_picked_planet" } } }
 			tnf_find_planet_priority_3 = yes
 		}
-		if = { limit = { NOT = { any_planet = { has_planet_flag = "folkunfair_picked" } } }
+		if = { limit = { NOT = { any_planet = { has_planet_flag = "tnf_picked_planet" } } }
 			tnf_find_planet_priority_4 = yes
 		}
-		if = { limit = { NOT = { any_planet = { has_planet_flag = "folkunfair_picked" } } }
+		if = { limit = { NOT = { any_planet = { has_planet_flag = "tnf_picked_planet" } } }
 			tnf_find_planet_priority_5 = yes
+		}
+		if = { limit = { NOT = { any_planet = { has_planet_flag = "tnf_picked_planet" } } }
+			log = "[root.GetName]: ERROR: Did not find any viable planet in [this.GetName]."
+		}
+		random_system_planet = {
+			limit = { has_planet_flag = "tnf_picked_planet" }
+			remove_planet_flag = "tnf_picked_planet"
+			set_planet_flag = "tnf_ignore_planet"
+			save_event_target_as = unfairplanet
 		}
 	}
 }
@@ -534,5 +547,70 @@ unfair_give_technologies = {
 				message = no
 			}
 		}
+	}
+}
+
+ensure_planet_food = {
+	set_variable = { which = "TNFPlanetFood" value = 0 }
+	set_variable = { which = "TNFNumPops" value = 0 }
+	every_tile = {
+		limit = { has_grown_pop = yes }
+		# Too bad we can't switch on pop_produces_resource
+		# ZZZ Remember that pops produce fractional resources with modifiers.
+		if = { limit = { pop = { pop_produces_resource { type = food amount > 5.9 } } }
+			PREV = { change_variable = { which = "TNFPlanetFood" value = 6 } }
+		else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 4.9 } } }
+			PREV = { change_variable = { which = "TNFPlanetFood" value = 5 } }
+		else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 3.9 } } }
+			PREV = { change_variable = { which = "TNFPlanetFood" value = 4 } }
+		else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 2.9 } } }
+			PREV = { change_variable = { which = "TNFPlanetFood" value = 3 } }
+		else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 1.9 } } }
+			PREV = { change_variable = { which = "TNFPlanetFood" value = 2 } }
+		else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 0.9 } } }
+			PREV = { change_variable = { which = "TNFPlanetFood" value = 1 } }
+		} } } } } } } } } } }
+		# We need to count the pops because we can't compare a trigger to a variable
+		PREV = { change_variable = { which = "TNFNumPops" value = 1 } }
+	}
+	if = {
+		limit = {
+			check_variable = { which = "TNFNumPops" value > "TNFPlanetFood" }
+			any_tile = {
+				tnf_tile_spawnable = yes
+				has_resource = { type = food amount > 0 }
+			}
+		}
+		# This might not actually remove any pops, if for some weird reason
+		# they all produce some food. I do declare, I don't care.
+		random_owned_pop = {
+			limit = { pop_produces_resource { type = food amount = 0 } }
+			kill_pop = yes
+		}
+		if = {
+			limit = {
+				any_tile = {
+					tnf_tile_spawnable = yes
+					has_resource = { type = food amount > 1 }
+				}
+			}
+			random_tile = {
+				limit = {
+					tnf_tile_spawnable = yes
+					has_resource = { type = food amount > 1 }
+				}
+				create_pop = { species = owner_main_species ethos = ROOT }
+			}
+			else = {
+				random_tile = {
+					limit = {
+						tnf_tile_spawnable = yes
+						has_resource = { type = food amount > 1 }
+					}
+					create_pop = { species = owner_main_species ethos = ROOT }
+				}
+			}
+		}
+		log = "[root.GetName]: [this.GetName] did not produce enough food, so we moved a pop."
 	}
 }

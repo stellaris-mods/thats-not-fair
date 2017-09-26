@@ -21,7 +21,7 @@ is_valuable_country = {
 
 tnf_potential_system = {
 	NOT = {
-		has_star_flag = "folkunfair_picked"
+		has_star_flag = "tnf_ignore_system"
 		has_star_flag = "empire_home_system"
 		has_star_flag = "fallen_shrouded"
 		has_star_flag = "fallen_shielded_1"
@@ -88,7 +88,7 @@ tnf_potential_system = {
 
 tnf_potential_planet = {
 	NOT = { has_planet_flag = "precursor_world" }
-	NOT = { has_planet_flag = "folkunfair_picked" }
+	NOT = { has_planet_flag = "tnf_ignore_planet" }
 	is_star = no
 	is_colony = no
 	has_owner = no
@@ -98,4 +98,10 @@ tnf_potential_planet = {
 		exists = owner
 		exists = controller
 	}
+}
+
+tnf_tile_spawnable = {
+	has_blocker = no
+	has_grown_pop = no
+	has_growing_pop = no
 }
