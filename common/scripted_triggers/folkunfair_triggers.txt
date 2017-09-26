@@ -1,20 +1,101 @@
-has_valuable_country = {
-	exists = space_owner
-	space_owner = {
-		OR = {
-			is_country_type = "guardian"
-			is_country_type = "guardian_dragon"
-			is_country_type = "guardian_stellarite"
-			is_country_type = "guardian_wraith"
-			is_country_type = "guardian_hiver"
-			is_country_type = "guardian_horror"
-			is_country_type = "guardian_fortress"
-			is_country_type = "guardian_dreadnought"
-			is_country_type = "guardian_sphere"
-			is_country_type = "enclave"
-			is_country_type = "fallen_empire"
-			is_country_type = "pirate"
-			has_modifier = "guardian_insane" # Catches Mercenary Enclave as well.
+is_valuable_country = {
+	OR = {
+		is_country_type = "guardian"
+		is_country_type = "guardian_dragon"
+		is_country_type = "guardian_stellarite"
+		is_country_type = "guardian_wraith"
+		is_country_type = "guardian_hiver"
+		is_country_type = "guardian_horror"
+		is_country_type = "guardian_fortress"
+		is_country_type = "guardian_dreadnought"
+		is_country_type = "guardian_sphere"
+		is_country_type = "enclave"
+		is_country_type = "fallen_empire"
+		is_country_type = "awakened_fallen_empire"
+		is_country_type = "pirate"
+		is_country_type = "shroud"
+		is_country_type = "shroud_spirits"
+		has_modifier = "guardian_insane" # Catches Mercenary Enclave as well.
+	}
+}
+
+tnf_potential_system = {
+	NOT = {
+		has_star_flag = "folkunfair_picked"
+		has_star_flag = "empire_home_system"
+		has_star_flag = "fallen_shrouded"
+		has_star_flag = "fallen_shielded_1"
+		has_star_flag = "fallen_shielded_2"
+		has_star_flag = "fallen_shielded_3"
+		has_star_flag = "holy_system_1"
+		has_star_flag = "holy_system_2"
+		has_star_flag = "holy_system_3"
+		has_star_flag = "holy_system_4"
+		has_star_flag = "fe_xeno_zoo"
+		has_star_flag = "hostile_system"
+		has_star_flag = "sanctuary_system"
+		has_star_flag = "enclave"
+		has_star_flag = "guardian"
+		has_star_flag = "guardians_dragon_system"
+		has_star_flag = "guardians_stellarite_system"
+		has_star_flag = "guardians_stellarite_about_to_spawn"
+		has_star_flag = "stellarite_present"
+		has_star_flag = "guardians_technosphere_system"
+		has_star_flag = "guardians_horror_system"
+		has_star_flag = "horror_spawned"
+		has_star_flag = "guardians_dreadnought_system"
+		has_star_flag = "guardians_hive_system"
+		has_star_flag = "guardians_artists_system"
+		has_star_flag = "pirate_system"
+		has_star_flag = "tiyanki_home_system"
+		has_star_flag = "manufactory_system"
+		has_star_flag = "ruined_dyson_system"
+		has_star_flag = "ruined_nexus_system"
+		has_star_flag = "ruined_sentry_system"
+		has_star_flag = "ruined_ring_system"
+	}
+	# Prevents picking any system within a FE cluster
+	is_fe_cluster = no
+	# Prevents picking a system that contains a valuable country
+	OR = {
+		NOT = { exists = space_owner }
+		space_owner = { is_valuable_country = no }
+		# ZZZ
+		# Note that space_owner can't be used reliably yet,
+		# it's not updated until a day after you change ownerships
+		# of planets, systems, whatever.
+	}
+	# Never pick a system where there is a default country owning a planet
+	NOT = {
+		any_planet = {
+			exists = owner
+			owner = { is_country_type = "default" }
 		}
+	}
+	any_planet = {
+		NOT = {
+			has_planet_flag = "precursor_world"
+			has_planet_flag = "fallen_empire_world"
+		}
+		is_capital = no
+		has_anomaly = no
+		# According to 00_habitability_traits,
+		# tertiary habitability is 20%, and nuked planets etc are 10%.
+		# So we look for anything above 10%.
+		habitability = { who = ROOT.species value > 0.1 }
+	}
+}
+
+tnf_potential_planet = {
+	NOT = { has_planet_flag = "precursor_world" }
+	NOT = { has_planet_flag = "folkunfair_picked" }
+	is_star = no
+	is_colony = no
+	has_owner = no
+	is_capital = no
+	has_anomaly = no
+	NOR = {
+		exists = owner
+		exists = controller
 	}
 }

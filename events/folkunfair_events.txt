@@ -521,17 +521,10 @@ country_event = {
 			ensure_colonizable_planet = yes
 
 			if = {
-				limit = {
-					exists = event_target:unfairplanet
-					NOT = {
-						event_target:unfairplanet = {
-							is_same_value = ROOT.capital_scope
-						}
-					}
-				}
+				limit = { exists = event_target:unfairplanet }
 				ensure_ideal_planet = yes
 				event_target:unfairplanet = {
-					set_planet_flag = "folkunfair_picked"
+					orbital_deposit_tile = { clear_deposits = yes }
 					ensure_planet_size = yes
 					ensure_system_clean = yes
 					set_owner = ROOT

@@ -1,130 +1,160 @@
+#
+# ZZZ
+# Refrain from using space_owner, if at all possible.
+# It is not updated until a day has passed.
+#
+
+
+# Find system within borders
+tnf_find_system_priority_1 = {
+	random_system_within_border = {
+		limit = {
+			NOT = { is_same_value = ROOT.capital_scope.solar_system }
+			tnf_potential_system = yes
+		}
+		set_star_flag = "tnf_spawn_system"
+	}
+}
+
+# Within 100 distance of capital
+tnf_find_system_priority_2 = {
+	capital_scope = {
+		random_system = {
+			limit = {
+				NOT = { is_same_value = PREV }
+				distance = {
+					source = PREV
+					max_distance = 100
+				}
+				tnf_potential_system = yes
+			}
+			set_star_flag = "tnf_spawn_system"
+		}
+	}
+}
+
+# Nevermind, just spawn system
+tnf_find_system_priority_3 = {
+	capital_scope = {
+		random_list = { # The initializers all set tnf_spawn_system
+			1 = { spawn_system = { min_distance = 20 max_distance = 60 initializer = "tnf_init_01" } }
+			1 = { spawn_system = { min_distance = 20 max_distance = 60 initializer = "tnf_init_02" } }
+			1 = { spawn_system = { min_distance = 20 max_distance = 60 initializer = "tnf_init_03" } }
+			1 = { spawn_system = { min_distance = 20 max_distance = 60 initializer = "tnf_init_04" } }
+		}
+	}
+}
+
+# Find ideal planet
+tnf_find_planet_priority_1 = {
+	random_system_planet = {
+		limit = {
+			tnf_potential_planet = yes
+			is_ideal_planet_class = {
+				who = ROOT
+				status = yes
+			}
+		}
+		set_planet_flag = "folkunfair_picked"
+		save_event_target_as = unfairplanet
+	}
+}
+
+# Secondary planet habitability
+tnf_find_planet_priority_2 = {
+	random_system_planet = {
+		limit = {
+			tnf_potential_planet = yes
+			habitability = {
+				who = ROOT.species
+				value > 0.50
+			}
+		}
+		set_planet_flag = "folkunfair_picked"
+		save_event_target_as = unfairplanet
+	}
+}
+
+# Tertiary planet habitability
+tnf_find_planet_priority_3 = {
+	random_system_planet = {
+		limit = {
+			tnf_potential_planet = yes
+			habitability = {
+				who = ROOT.species
+				value > 0.15
+			}
+		}
+		set_planet_flag = "folkunfair_picked"
+		save_event_target_as = unfairplanet
+	}
+}
+
+# Any potentioal planet ?
+tnf_find_planet_priority_4 = {
+	random_system_planet = {
+		limit = {
+			tnf_potential_planet = yes
+		}
+		set_planet_flag = "folkunfair_picked"
+		save_event_target_as = unfairplanet
+	}
+}
+
+# No potential planet, so make one.
+tnf_find_planet_priority_5 = {
+	log = "Spawning planet."
+	random_system_planet = { save_event_target_as = tnf_spawn_planet_at }
+	spawn_planet = {
+		class = random_colonizable
+		location = event_target:tnf_spawn_planet_at
+		orbit_angle_offset = -30
+		orbit_distance_offset = 20
+		size = 18
+		has_ring = no
+		init_effect = {
+			reroll_deposits = yes # ZZZ Not sure if this is necessary.
+			set_planet_flag = "folkunfair_picked"
+			save_event_target_as = unfairplanet
+		}
+	}
+}
 
 # From country scope
 ensure_colonizable_planet = {
-	# We can't clear event targets, so set it to the countries home
-	# otherwise we can't know if it was set by the effect, or
-	# if it's the same as a previous value
-	if = {
-		limit = {
-			# Prevents error.log entry on first run through
-			exists = event_target:unfairplanet
-		}
-		ROOT.capital_scope = { save_event_target_as = unfairplanet }
+	# Step 1: Pick system
+	tnf_find_system_priority_1 = yes
+	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_system" } } }
+		log = "Locating system for [root.GetName], did not find one inside borders."
+		tnf_find_system_priority_2 = yes
 	}
-	# Or, I have not found a way to clear it, at least.
-	# And using variables to track if the event target is set would be crap.
+	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_system" } } }
+		log = "Locating system for [root.GetName], did not find one within 100 distance units."
+		tnf_find_system_priority_3 = yes
+	}
+	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_system" } } }
+		log = "WARNING: Locating system for [root.GetName], did not find one after forcefully spawning."
+	}
 
-	ROOT.capital_scope = {
-		closest_system = {
-			limit = {
-				NOT = {
-					is_same_value = ROOT.capital_scope.solar_system
-					has_star_flag = "folkunfair_picked"
-					has_star_flag = "hostile_system"
-					has_star_flag = "sanctuary_system"
-					has_star_flag = "enclave"
-					has_star_flag = "guardian"
-					has_star_flag = "guardians_dragon_system"
-					has_star_flag = "guardians_stellarite_system"
-					has_star_flag = "guardians_stellarite_about_to_spawn"
-					has_star_flag = "stellarite_present"
-					has_star_flag = "guardians_technosphere_system"
-					has_star_flag = "guardians_horror_system"
-					has_star_flag = "horror_spawned"
-					has_star_flag = "guardians_dreadnought_system"
-					has_star_flag = "guardians_hive_system"
-					has_star_flag = "guardians_artists_system"
-				}
-				# OR = {
-				# 	has_planet_class = "pc_desert"
-				# 	has_planet_class = "pc_tropical"
-				# 	has_planet_class = "pc_arid"
-				# 	has_planet_class = "pc_continental"
-				# 	has_planet_class = "pc_ocean"
-				# 	has_planet_class = "pc_tundra"
-				# 	has_planet_class = "pc_arctic"
-				# 	has_planet_class = "pc_alpine"
-				# 	has_planet_class = "pc_savannah"
-				# }
-				# According to 00_habitability_traits,
-				# tertiary habitability is 20%, and nuked planets etc are 10%.
-				# So we look for anything above 10%.
-				any_planet = {
-					habitability = { who = ROOT.species value > 0.1 }
-					NOT = { has_planet_flag = "precursor_world" }
-				}
-			}
-			# First, see if we find an ideal planet
-			set_star_flag = "folkunfair_picked"
-			random_system_planet = {
-				limit = {
-					is_ideal_planet_class = {
-						who = ROOT
-						status = yes
-					}
-					is_colony = no
-					has_owner = no
-					NOT = { has_planet_flag = "precursor_world" }
-				}
-				set_planet_flag = "folkunfair_picked"
-				save_event_target_as = unfairplanet
-			}
-			if = {
-				limit = {
-					NOT = {
-						# Planets in the system scope
-						any_planet = {
-							has_planet_flag = "folkunfair_picked"
-						}
-					}
-				}
-				# We did not find an ideal planet, so we need to convert.
-				# So secondly, look for a colonizable planet.
-				# We need to convert one of the planets to our type
-				random_system_planet = {
-					limit = {
-						habitability = { who = ROOT.species value > 0.4 }
-						is_colony = no
-						has_owner = no
-						NOT = { has_planet_flag = "precursor_world" }
-					}
-					set_planet_flag = "folkunfair_picked"
-					save_event_target_as = unfairplanet
-				}
-			}
-			if = {
-				limit = {
-					NOT = {
-						# Planets in the system scope
-						any_planet = {
-							has_planet_flag = "folkunfair_picked"
-						}
-					}
-				}
-				# We did not find any planet with habitability above 40%
-				# So thirdly, we just select any random planet.
-				# We need to convert one of the planets to our type
-				random_system_planet = {
-					limit = {
-						NOT = {
-							any_pop = { owner = { is_country_type = "default" } }
-						}
-						NOT = { has_planet_flag = "precursor_world" }
-					}
-					if = {
-						limit = { has_owner = yes }
-						owner = { destroy_country = yes }
-					}
-					if = {
-						limit = { is_colony = yes }
-						destroy_colony = {
-							keep_buildings = no
-						}
-					}
-					set_planet_flag = "folkunfair_picked"
-					save_event_target_as = unfairplanet
-				}
-			}
+	# Step 2: Pick planet
+	random_system = {
+		limit = { has_star_flag = "tnf_spawn_system" }
+		set_star_flag = "folkunfair_picked"
+		remove_star_flag = "tnf_spawn_system"
+
+		# ZZZ any_planet{} checks within system scope
+		tnf_find_planet_priority_1 = yes
+		if = { limit = { NOT = { any_planet = { has_planet_flag = "folkunfair_picked" } } }
+			tnf_find_planet_priority_2 = yes
+		}
+		if = { limit = { NOT = { any_planet = { has_planet_flag = "folkunfair_picked" } } }
+			tnf_find_planet_priority_3 = yes
+		}
+		if = { limit = { NOT = { any_planet = { has_planet_flag = "folkunfair_picked" } } }
+			tnf_find_planet_priority_4 = yes
+		}
+		if = { limit = { NOT = { any_planet = { has_planet_flag = "folkunfair_picked" } } }
+			tnf_find_planet_priority_5 = yes
 		}
 	}
 }
@@ -187,6 +217,8 @@ unfair_colonize_planet = {
 			}
 		}
 	}
+	# It just clutters up the debugtooltip
+	remove_planet_flag = "folkunfair_foundspot"
 
 	# Ripped directly from empire_initializers.txt
 	event_target:unfaircapitaltile = {
