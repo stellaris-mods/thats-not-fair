@@ -27,7 +27,7 @@ tnf_init_01 = {
 	change_orbit = 45
 
 	planet = {
-		count = { min = 2 max = 10 }
+		count = { min = 2 max = 6 }
 		orbit_distance = 20
 		orbit_angle = { min = 90 max = 270 }
 
@@ -60,7 +60,7 @@ tnf_init_02 = {
 	change_orbit = 30
 
 	planet = {
-		count = 2
+		count = { min = 1 max = 3 }
 		orbit_distance = 20
 		orbit_angle = { min = 90 max = 270 }
 	}
@@ -68,14 +68,14 @@ tnf_init_02 = {
 	change_orbit = 25
 
 	planet = {
-		count = { min = 1 max = 4 }
+		count = { min = 1 max = 2 }
 		class = random_asteroid
 		orbit_distance = 0
 		orbit_angle = { min = 90 max = 270 }
 	}
 
 	planet = {
-		count = { min = 2 max = 5 }
+		count = { min = 1 max = 3 }
 		orbit_distance = 25
 		orbit_angle = { min = 90 max = 270 }
 
@@ -107,7 +107,7 @@ tnf_init_03 = {
 	change_orbit = 45
 
 	planet = {
-		count = { min = 0 max = 1 }
+		count = { min = 0 max = 2 }
 		orbit_distance = 10
 		orbit_angle = { min = 90 max = 270 }
 	}
@@ -115,15 +115,12 @@ tnf_init_03 = {
 	planet = {
 		count = { min = 1 max = 2 }
 		orbit_distance = 60
-		class = pc_gas_giant
 		orbit_angle = { min = 90 max = 270 }
-		size = 25
 
 		change_orbit = @base_moon_distance
 
 		moon = {
 			count = { min = 1 max = 4 }
-			size = { min = 8 max = 20 }
 			orbit_angle = { min = 90 max = 270 }
 			orbit_distance = 6
 		}
@@ -132,7 +129,7 @@ tnf_init_03 = {
 	change_orbit = 20
 
 	planet = {
-		count = { min = 0 max = 2 }
+		count = { min = 1 max = 2 }
 		orbit_distance = 20
 		orbit_angle = { min = 90 max = 270 }
 	}
@@ -157,7 +154,7 @@ tnf_init_04 = {
 	change_orbit = 120
 
 	planet = {
-		count = { min = 3 max = 6 }
+		count = { min = 2 max = 4 }
 		class = random_asteroid
 		orbit_distance = 0
 		orbit_angle = { min = 90 max = 270 }
@@ -166,7 +163,7 @@ tnf_init_04 = {
 	change_orbit = -80
 
 	planet = {
-		count = { min = 0 max = 2 }
+		count = { min = 1 max = 3 }
 		orbit_distance = 20
 		orbit_angle = { min = 90 max = 270 }
 	}
@@ -174,7 +171,7 @@ tnf_init_04 = {
 	change_orbit = 80
 
 	planet = {
-		count = { min = 0 max = 2 }
+		count = { min = 1 max = 3 }
 		orbit_distance = 40
 		orbit_angle = { min = 90 max = 270 }
 	}
