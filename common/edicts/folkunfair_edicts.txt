@@ -2,7 +2,6 @@ country_edict = {
 	name = "folkunfair_boost"
 	potential = {
 		has_country_flag = "folkunfair_allow_edict"
-		is_country_type = "default"
 	}
 	modifier = {
 		country_ship_upgrade_cost_mult = -1
