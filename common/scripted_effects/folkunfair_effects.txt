@@ -4,7 +4,6 @@
 # It is not updated until a day has passed.
 #
 
-
 # Find system within borders
 tnf_find_system_priority_1 = {
 	random_system_within_border = {
@@ -231,14 +230,30 @@ unfair_colonize_planet = {
 		}
 	}
 	planet_event = { id = game_start.22 }
-	planet_event = { id = game_start.23 }
+	# ZZZ game_start.23 places pops like an idiot
+	best_tile_for_pop = { create_pop = { species = owner_main_species ethos = ROOT } }
+	best_tile_for_pop = { create_pop = { species = owner_main_species ethos = ROOT } }
+	best_tile_for_pop = { create_pop = { species = owner_main_species ethos = ROOT } }
+	best_tile_for_pop = { create_pop = { species = owner_main_species ethos = ROOT } }
 }
 
 unfair_upgrade_homeworld = {
 	# game_start.20
 	clear_blockers = yes
 	planet_event = { id = game_start.22 }
-	planet_event = { id = game_start.23 }
+	# ZZZ game_start.23 places pops like an idiot
+	best_tile_for_pop = { create_pop = { species = owner_main_species ethos = ROOT } }
+	best_tile_for_pop = { create_pop = { species = owner_main_species ethos = ROOT } }
+	random_list = {
+		1 = { }
+		1 = {
+			best_tile_for_pop = { create_pop = { species = owner_main_species ethos = ROOT } }
+		}
+		1 = {
+			best_tile_for_pop = { create_pop = { species = owner_main_species ethos = ROOT } }
+			best_tile_for_pop = { create_pop = { species = owner_main_species ethos = ROOT } }
+		}
+	}
 }
 
 unfair_remove_planetmodifiers = {
