@@ -11,7 +11,7 @@ tnf_find_system_priority_1 = {
 			NOT = { is_same_value = ROOT.capital_scope.solar_system }
 			tnf_potential_system = yes
 		}
-		log = "[root.GetName]: System [this.GetName] found within borders."
+		log = "SYSTEM [this.GetName]: Found within borders."
 		set_star_flag = "tnf_picked_system"
 	}
 }
@@ -28,7 +28,7 @@ tnf_find_system_priority_2 = {
 				}
 				tnf_potential_system = yes
 			}
-			log = "[root.GetName]: System [this.GetName] found within 80 distance of capital."
+			log = "SYSTEM [this.GetName]: Found within 80 distance of capital."
 			set_star_flag = "tnf_picked_system"
 		}
 	}
@@ -47,7 +47,7 @@ tnf_find_system_priority_3 = {
 			}
 		}
 		solar_system = {
-			log = "[root.GetName]: System spawning on first try from [this.GetName]."
+			log = "SYSTEM: Spawning on first try from [this.GetName]."
 			set_star_flag = "tnf_spawn_here"
 		}
 	}
@@ -60,7 +60,7 @@ tnf_find_system_priority_3 = {
 				NOT = { has_star_flag = "tnf_spawned_from" }
 				distance = { source = ROOT.capital_scope max_distance = 40 }
 			}
-			log = "[root.GetName]: System spawning on second try from [this.GetName]."
+			log = "SYSTEM: Spawning on second try from [this.GetName]."
 			set_star_flag = "tnf_spawn_here"
 		}
 	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_here" } } }
@@ -70,21 +70,21 @@ tnf_find_system_priority_3 = {
 				NOT = { has_star_flag = "tnf_spawned_from" }
 				distance = { source = ROOT.capital_scope max_distance = 60 }
 			}
-			log = "[root.GetName]: System spawning on third try from [this.GetName]."
+			log = "SYSTEM: Spawning on third try from [this.GetName]."
 			set_star_flag = "tnf_spawn_here"
 		}
 	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_here" } } }
 		# Fourth, try 40 again but just ignore the flag
 		random_system = {
 			limit = { distance = { source = ROOT.capital_scope max_distance = 40 } }
-			log = "[root.GetName]: System spawning on fourth try from [this.GetName]."
+			log = "SYSTEM: Spawning on fourth try from [this.GetName]."
 			set_star_flag = "tnf_spawn_here"
 		}
 	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_here" } } }
 		# Fifth, try 60 again but just ignore the flag
 		random_system = {
 			limit = { distance = { source = ROOT.capital_scope max_distance = 60 } }
-			log = "[root.GetName]: System spawning on fifth try from [this.GetName]."
+			log = "SYSTEM: Spawning on fifth try from [this.GetName]."
 			set_star_flag = "tnf_spawn_here"
 		}
 	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_spawn_here" } } }
@@ -93,7 +93,7 @@ tnf_find_system_priority_3 = {
 		# command always "walks" in the same direction. So if we end up here
 		# twice in a row, that means the systems will be directly on top of eachother.
 		capital_scope = { solar_system = {
-			log = "[root.GetName]: System spawning on sixth try from [this.GetName]."
+			log = "SYSTEM: Spawning on sixth try from [this.GetName]."
 			set_star_flag = "tnf_spawn_here"
 		} }
 	} } } } }
@@ -121,7 +121,7 @@ tnf_find_planet_priority_1 = {
 				status = yes
 			}
 		}
-		log = "[root.GetName]: Planet priority 1 found."
+		log = "PLANET [this.GetName]: Priority 1."
 		set_planet_flag = "tnf_picked_planet"
 	}
 }
@@ -136,7 +136,7 @@ tnf_find_planet_priority_2 = {
 				value > 0.50
 			}
 		}
-		log = "[root.GetName]: Planet priority 2 found."
+		log = "PLANET [this.GetName]: Priority 2."
 		set_planet_flag = "tnf_picked_planet"
 	}
 }
@@ -151,7 +151,7 @@ tnf_find_planet_priority_3 = {
 				value > 0.15
 			}
 		}
-		log = "[root.GetName]: Planet priority 3 found."
+		log = "PLANET [this.GetName]: Priority 3."
 		set_planet_flag = "tnf_picked_planet"
 	}
 }
@@ -162,14 +162,14 @@ tnf_find_planet_priority_4 = {
 		limit = {
 			tnf_potential_planet = yes
 		}
-		log = "[root.GetName]: Planet priority 4 found."
+		log = "PLANET [this.GetName]: Priority 4."
 		set_planet_flag = "tnf_picked_planet"
 	}
 }
 
 # No potential planet, so make one.
 tnf_find_planet_priority_5 = {
-	log = "[root.GetName]: Planet priority 5: Spawning new planet in [this.GetName]."
+	log = "PLANET: Spawning new planet in [this.GetName]."
 	random_system_planet = { save_event_target_as = tnf_spawn_planet_at }
 	spawn_planet = {
 		class = random_colonizable
@@ -205,6 +205,7 @@ tnf_find_planet_priority_5 = {
 
 # From country scope
 ensure_colonizable_planet = {
+	log = "[root.GetName]: Find planet for colonization #[root.UnfairColonize]."
 	# Step 1: Pick system
 	tnf_find_system_priority_1 = yes
 	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_picked_system" } } }
@@ -214,7 +215,7 @@ ensure_colonizable_planet = {
 		tnf_find_system_priority_3 = yes
 	}
 	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_picked_system" } } }
-		log = "[root.GetName]: ERROR: Did not find any viable solar system."
+		log = "ERROR: Did not find any viable solar system."
 	}
 
 	# Step 2: Pick planet
@@ -238,7 +239,7 @@ ensure_colonizable_planet = {
 			tnf_find_planet_priority_5 = yes
 		}
 		if = { limit = { NOT = { any_planet = { has_planet_flag = "tnf_picked_planet" } } }
-			log = "[root.GetName]: ERROR: Did not find any viable planet in [this.GetName]."
+			log = "ERROR: Did not find any viable planet in [this.GetName]."
 		}
 		random_system_planet = {
 			limit = { has_planet_flag = "tnf_picked_planet" }
@@ -779,7 +780,7 @@ tnf_move_pop_for_food = {
 					create_pop = { species = owner_main_species ethos = ROOT }
 				}
 			} } } }
-			log = "[root.GetName]: [this.GetName] did not produce enough food, so we moved a pop."
+			log = "PLANET [this.GetName]: Not enough food, so we moved a pop."
 		}
 
 	}
