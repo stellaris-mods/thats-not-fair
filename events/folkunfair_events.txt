@@ -532,6 +532,12 @@ country_event = {
 					unfair_colonize_planet = yes
 					ensure_planet_food = yes
 					unfair_spaceport = yes
+
+					# ZZZ This doesnt work, it just removes all modifiers
+					#reroll_planet_modifiers = yes
+
+					# ZZZ This doesnt work, it just removes all blockers
+					#reroll_blockers = yes
 				}
 			}
 

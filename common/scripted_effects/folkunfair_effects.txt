@@ -252,6 +252,7 @@ ensure_colonizable_planet = {
 
 tnf_random_tile_resource = {
 	random_tile = {
+		limit = { has_deposit = no }
 		random_list = {
 			50 = { } # null deposit
 			15 = { add_deposit = d_mineral_deposit }
@@ -299,60 +300,70 @@ ensure_planet_size = {
 			while = { limit = { planet_size < 16 }
 				change_planet_size < 1
 				tnf_random_tile_resource = yes
+				tnf_random_tile_blocker = yes
 			}
 		}
 		1 = {
 			while = { limit = { planet_size < 17 }
 				change_planet_size < 1
 				tnf_random_tile_resource = yes
+				tnf_random_tile_blocker = yes
 			}
 		}
 		1 = {
 			while = { limit = { planet_size < 18 }
 				change_planet_size < 1
 				tnf_random_tile_resource = yes
+				tnf_random_tile_blocker = yes
 			}
 		}
 		1 = {
 			while = { limit = { planet_size < 19 }
 				change_planet_size < 1
 				tnf_random_tile_resource = yes
+				tnf_random_tile_blocker = yes
 			}
 		}
 		1 = {
 			while = { limit = { planet_size < 20 }
 				change_planet_size < 1
 				tnf_random_tile_resource = yes
+				tnf_random_tile_blocker = yes
 			}
 		}
 		1 = {
 			while = { limit = { planet_size < 21 }
 				change_planet_size < 1
 				tnf_random_tile_resource = yes
+				tnf_random_tile_blocker = yes
 			}
 		}
 		1 = {
 			while = { limit = { planet_size < 22 }
 				change_planet_size < 1
 				tnf_random_tile_resource = yes
+				tnf_random_tile_blocker = yes
 			}
 		}
 		1 = {
 			while = { limit = { planet_size < 23 }
 				change_planet_size < 1
 				tnf_random_tile_resource = yes
+				tnf_random_tile_blocker = yes
 			}
 		}
 		1 = {
 			while = { limit = { planet_size < 24 }
 				change_planet_size < 1
 				tnf_random_tile_resource = yes
+				tnf_random_tile_blocker = yes
 			}
 		}
 		1 = {
 			while = { limit = { planet_size < 25 }
 				change_planet_size < 1
 				tnf_random_tile_resource = yes
+				tnf_random_tile_blocker = yes
 			}
 		}
 	}

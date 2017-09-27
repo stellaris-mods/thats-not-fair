@@ -1,0 +1,142 @@
+
+# ZZZ This file basically contains a poor mans version of reroll_blockers,
+# ZZZ because if I invoke that after I'm done with all other TNF effects on
+# ZZZ a new planet, `reroll_blockers = yes` simply removes all blockers.
+
+tnf_tileblocker_alpine = {
+	random_list = {
+		100 = { }
+		29  = { set_blocker = tb_mountain_range }
+		9   = { set_blocker = tb_active_volcano }
+		9   = { set_blocker = tb_dangerous_wildlife }
+		35  = { set_blocker = tb_massive_glacier }
+	} # 82
+}
+
+tnf_tileblocker_arctic = {
+	random_list = {
+		100 = { }
+		9   = { set_blocker = tb_mountain_range }
+		9   = { set_blocker = tb_active_volcano }
+		9   = { set_blocker = tb_dangerous_wildlife }
+		54  = { set_blocker = tb_massive_glacier }
+	} # 81
+}
+
+tnf_tileblocker_arid = {
+	random_list = {
+		100 = { }
+		9   = { set_blocker = tb_mountain_range }
+		9   = { set_blocker = tb_active_volcano }
+		9   = { set_blocker = tb_dangerous_wildlife }
+		20  = { set_blocker = tb_quicksand_basin }
+		36  = { set_blocker = tb_deep_sinkhole }
+	} # 83
+}
+
+tnf_tileblocker_continental = {
+	random_list = {
+		100 = { }
+		17  = { set_blocker = tb_mountain_range }     # should be 22
+		17  = { set_blocker = tb_active_volcano }     # 22
+		17  = { set_blocker = tb_dangerous_wildlife } # 22
+		15  = { set_blocker = tb_dense_jungle }       # 20
+		15  = { set_blocker = tb_toxic_kelp }         # 20
+	} # should be 106, reduced to 81 by subtracting 5 from each
+}
+
+tnf_tileblocker_desert = {
+	random_list = {
+		100 = { }
+		9   = { set_blocker = tb_mountain_range }
+		9   = { set_blocker = tb_active_volcano }
+		9   = { set_blocker = tb_dangerous_wildlife }
+		18  = { set_blocker = tb_deep_sinkhole }
+		36  = { set_blocker = tb_quicksand_basin }
+	}# 81
+}
+
+tnf_tileblocker_ocean = {
+	random_list = {
+		100 = { }
+		18  = { set_blocker = tb_active_volcano }
+		9   = { set_blocker = tb_dangerous_wildlife }
+		54  = { set_blocker = tb_toxic_kelp }
+	} # 81
+}
+
+tnf_tileblocker_savannah = {
+	random_list = {
+		100 = { }
+		17  = { set_blocker = tb_mountain_range } # should be 9
+		17  = { set_blocker = tb_active_volcano } # should be 9
+		9   = { set_blocker = tb_dangerous_wildlife }
+		20  = { set_blocker = tb_quicksand_basin }
+		18  = { set_blocker = tb_deep_sinkhole }
+	} # total 65, bumped to 81 with first two
+}
+
+tnf_tileblocker_tropical = {
+	random_list = {
+		100 = { }
+		9   = { set_blocker = tb_mountain_range }
+		9   = { set_blocker = tb_active_volcano }
+		9   = { set_blocker = tb_dangerous_wildlife }
+		36  = { set_blocker = tb_dense_jungle }
+		18  = { set_blocker = tb_noxious_swamp }
+	} # 81
+}
+
+tnf_tileblocker_tundra = {
+	random_list = {
+		100 = { }
+		9   = { set_blocker = tb_mountain_range }
+		9   = { set_blocker = tb_active_volcano }
+		9   = { set_blocker = tb_dangerous_wildlife }
+		36  = { set_blocker = tb_noxious_swamp }
+		18  = { set_blocker = tb_massive_glacier }
+	} # 81
+}
+
+tnf_tileblocker_default = {
+	random_list = {
+		100 = { }
+		# These should be 9, but this is probably a "3rd party" planet
+		# class, so treat it like the others above.
+		27  = { set_blocker = tb_mountain_range }
+		27  = { set_blocker = tb_active_volcano }
+		27  = { set_blocker = tb_dangerous_wildlife }
+	}
+}
+
+tnf_random_tile_blocker = {
+	switch = {
+		trigger = is_planet_class
+		pc_tropical = { random_tile = { limit = { tnf_tile_spawnable = yes has_building = no } tnf_tileblocker_tropical = yes } }
+		pc_continental = { random_tile = { limit = { tnf_tile_spawnable = yes has_building = no } tnf_tileblocker_continental = yes } }
+		pc_desert = { random_tile = { limit = { tnf_tile_spawnable = yes has_building = no } tnf_tileblocker_desert = yes } }
+		pc_savannah = { random_tile = { limit = { tnf_tile_spawnable = yes has_building = no } tnf_tileblocker_savannah = yes } }
+		pc_arid = { random_tile = { limit = { tnf_tile_spawnable = yes has_building = no } tnf_tileblocker_arid = yes } }
+		pc_tundra = { random_tile = { limit = { tnf_tile_spawnable = yes has_building = no } tnf_tileblocker_tundra = yes } }
+		pc_arctic = { random_tile = { limit = { tnf_tile_spawnable = yes has_building = no } tnf_tileblocker_arctic = yes } }
+		pc_alpine = { random_tile = { limit = { tnf_tile_spawnable = yes has_building = no } tnf_tileblocker_alpine = yes } }
+		pc_ocean = { random_tile = { limit = { tnf_tile_spawnable = yes has_building = no } tnf_tileblocker_ocean = yes } }
+	}
+	# ZZZ `default` target doesn't work when switching on is_planet_class for some reason
+	if = {
+		limit = {
+			NOT = {
+				is_planet_class = pc_tropical
+				is_planet_class = pc_continental
+				is_planet_class = pc_desert
+				is_planet_class = pc_savannah
+				is_planet_class = pc_arid
+				is_planet_class = pc_tundra
+				is_planet_class = pc_arctic
+				is_planet_class = pc_alpine
+				is_planet_class = pc_ocean
+			}
+		}
+		tnf_tileblocker_default = yes
+	}
+}
