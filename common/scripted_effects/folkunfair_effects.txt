@@ -253,9 +253,42 @@ ensure_colonizable_planet = {
 tnf_random_tile_resource = {
 	random_tile = {
 		random_list = {
-			33 = { add_deposit = d_mineral_deposit }
-			33 = { add_deposit = d_energy_deposit }
-			33 = { add_deposit = d_farmland_deposit }
+			50 = { } # null deposit
+			15 = { add_deposit = d_mineral_deposit }
+			10 = { add_deposit = d_rich_mineral_deposit }
+			2  = { add_deposit = d_vast_mineral_deposit }
+			1  = { add_deposit = d_immense_mineral_deposit }
+			15 = { add_deposit = d_energy_deposit }
+			10 = { add_deposit = d_rich_energy_deposit }
+			2  = { add_deposit = d_vast_energy_deposit } # should be 1, for some reason
+			1  = { add_deposit = d_immense_energy_deposit }
+			15 = { add_deposit = d_farmland_deposit }
+			10 = { add_deposit = d_rich_farmland_deposit }
+			2  = { add_deposit = d_vast_farmland_deposit }
+			1  = { add_deposit = d_immense_farmland_deposit }
+
+			5  = { add_deposit = d_mineral_energy_deposit }
+			2  = { add_deposit = d_rich_mineral_energy_deposit }
+			5  = { add_deposit = d_mineral_food_deposit }
+			2  = { add_deposit = d_rich_food_mineral_deposit }
+
+			7  = { add_deposit = d_society_deposit }
+			3  = { add_deposit = d_rich_society_deposit }
+			2  = { add_deposit = d_vast_society_deposit }
+			1  = { add_deposit = d_immense_society_deposit }
+
+			7  = { add_deposit = d_physics_deposit } # lolwuts this should be 12
+			3  = { add_deposit = d_rich_physics_deposit } # wtf this should be 5 for some reason
+			2  = { add_deposit = d_vast_physics_deposit }
+			1  = { add_deposit = d_immense_physics_deposit }
+
+			7  = { add_deposit = d_engineering_deposit }
+			3  = { add_deposit = d_rich_engineering_deposit }
+			2  = { add_deposit = d_vast_engineering_deposit }
+			1  = { add_deposit = d_immense_engineering_deposit }
+
+			2  = { add_deposit = d_betharian_deposit }
+			2  = { add_deposit = d_alien_pets_deposit }
 		}
 	}
 }
