@@ -98,6 +98,7 @@ tnf_potential_planet = {
 		exists = owner
 		exists = controller
 	}
+	planet_size < 26
 }
 
 tnf_tile_spawnable = {
@@ -109,4 +110,14 @@ tnf_tile_spawnable = {
 	# --
 	has_blocker = no
 	has_growing_pop = no
+}
+
+tnf_is_ai = {
+	is_ai = yes
+	is_country_type = "default"
+	num_owned_planets > 0
+}
+
+tnf_is_player = {
+	is_ai = no
 }

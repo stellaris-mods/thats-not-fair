@@ -1,0 +1,103 @@
+namespace = tnfInit
+
+event = {
+	id = tnfInit.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		# Find a player country first so we have a scope to work in
+		# (you cant use set_variable and such outside a country scope)
+		random_country = {
+			limit = { tnf_is_player = yes }
+			set_country_flag = "unfair_playercountry"
+			country_event = {
+				id = tnfInit.2
+			}
+		}
+	}
+}
+
+country_event = {
+	id = tnfInit.2
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_variable = {
+			which = "FolkUnfairPlanetCount"
+			value = 0
+		}
+		set_variable = {
+			which = "FolkUnfairAICount"
+			value = 0
+		}
+		every_country = {
+			set_country_flag = "unfair_unchecked"
+		}
+		while = {
+			limit = {
+				any_country = { has_country_flag = "unfair_unchecked" }
+			}
+			random_country = {
+				limit = { has_country_flag = "unfair_unchecked" }
+				if = {
+					limit = {
+						tnf_is_ai = yes
+						# Dont count AIs with one planet, they're not advanced
+						num_owned_planets > 1
+					}
+					set_country_flag = "tnf_was_advanced"
+					root = {
+						change_variable = {
+							which = "FolkUnfairAICount"
+							value = 1 # +1
+						}
+					}
+					# ADVANCED_EMPIRE_MAX_EXTRA_COLONIES default is 4 as of 1.3.2
+					# There is probably a better way to assign this, but I am too lazy to find it
+					switch = {
+						trigger = num_owned_planets
+						2 = {
+							root = {
+								change_variable = {
+									which = "FolkUnfairPlanetCount"
+									value = 2
+								}
+							}
+						}
+						3 = {
+							root = {
+								change_variable = {
+									which = "FolkUnfairPlanetCount"
+									value = 3
+								}
+							}
+						}
+						4 = {
+							root = {
+								change_variable = {
+									which = "FolkUnfairPlanetCount"
+									value = 4
+								}
+							}
+						}
+						default = {
+							root = {
+								change_variable = {
+									which = "FolkUnfairPlanetCount"
+									value = 5
+								}
+							}
+						}
+					}
+				}
+				remove_country_flag = "unfair_unchecked"
+			}
+		}
+		divide_variable = {
+			which = "FolkUnfairPlanetCount"
+			value = "FolkUnfairAICount"
+		}
+	}
+}

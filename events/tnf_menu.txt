@@ -1,0 +1,346 @@
+namespace = tnfMenu
+
+country_event = {
+	id = tnfMenu.1
+	title = "folkunfair.title"
+	picture = "GFX_evt_folkunfair_init"
+	is_triggered_only = yes
+	desc = {
+		trigger = {
+			success_text = {
+				text = "folkunfair.fair"
+				check_variable = {
+					which = "FolkUnfairPlanetCount"
+					value < 1.01
+				}
+				NOT = {
+					has_country_flag = "tnf_one"
+					has_country_flag = "tnf_two"
+					has_country_flag = "tnf_three"
+					has_country_flag = "tnf_four"
+					has_country_flag = "tnf_five"
+					has_country_flag = "tnf_boostme"
+					has_country_flag = "tnf_boostai"
+					has_country_flag = "tnf_edictme"
+					has_country_flag = "tnf_edictai"
+				}
+			}
+			success_text = {
+				text = "folkunfair.unfair"
+				check_variable = {
+					which = "FolkUnfairPlanetCount"
+					value > 1
+				}
+				NOT = {
+					has_country_flag = "tnf_one"
+					has_country_flag = "tnf_two"
+					has_country_flag = "tnf_three"
+					has_country_flag = "tnf_four"
+					has_country_flag = "tnf_five"
+					has_country_flag = "tnf_boostme"
+					has_country_flag = "tnf_boostai"
+					has_country_flag = "tnf_edictme"
+					has_country_flag = "tnf_edictai"
+				}
+			}
+			success_text = {
+				text = "folkunfair.apply.heading"
+				OR = {
+					has_country_flag = "tnf_one"
+					has_country_flag = "tnf_two"
+					has_country_flag = "tnf_three"
+					has_country_flag = "tnf_four"
+					has_country_flag = "tnf_five"
+					has_country_flag = "tnf_boostme"
+					has_country_flag = "tnf_boostai"
+					has_country_flag = "tnf_edictme"
+					has_country_flag = "tnf_edictai"
+				}
+			}
+			success_text = {
+				text = "folkunfair.apply.advance"
+				OR = {
+					has_country_flag = "tnf_one"
+					has_country_flag = "tnf_two"
+					has_country_flag = "tnf_three"
+					has_country_flag = "tnf_four"
+					has_country_flag = "tnf_five"
+				}
+			}
+			success_text = {
+				text = "folkunfair.apply.tnf_one"
+				has_country_flag = "tnf_one"
+			}
+			success_text = {
+				text = "folkunfair.apply.tnf_two"
+				has_country_flag = "tnf_two"
+			}
+			success_text = {
+				text = "folkunfair.apply.tnf_three"
+				has_country_flag = "tnf_three"
+			}
+			success_text = {
+				text = "folkunfair.apply.tnf_four"
+				has_country_flag = "tnf_four"
+			}
+			success_text = {
+				text = "folkunfair.apply.tnf_five"
+				has_country_flag = "tnf_five"
+			}
+			success_text = {
+				text = "folkunfair.apply.tnf_boostme"
+				has_country_flag = "tnf_boostme"
+			}
+			success_text = {
+				text = "folkunfair.apply.tnf_edictme"
+				has_country_flag = "tnf_edictme"
+			}
+			success_text = {
+				text = "folkunfair.apply.tnf_five_ai"
+				has_country_flag = "tnf_five"
+			}
+			success_text = {
+				text = "folkunfair.apply.advance_ai"
+				has_country_flag = "tnf_five"
+			}
+			success_text = {
+				text = "folkunfair.apply.tnf_edictai"
+				has_country_flag = "tnf_edictai"
+			}
+			success_text = {
+				text = "folkunfair.apply.tnf_boostai"
+				has_country_flag = "tnf_boostai"
+			}
+		}
+	}
+
+	trigger = {
+		has_country_flag = "unfair_playercountry"
+	}
+
+	option = {
+		name = "folkunfair.default"
+		custom_tooltip = "folkunfair.default.tooltip"
+	}
+	option = {
+		name = "folkunfair.apply"
+		custom_tooltip = "folkunfair.apply.tooltip"
+		allow = {
+			hidden_trigger = {
+				OR = {
+					has_country_flag = "tnf_one"
+					has_country_flag = "tnf_two"
+					has_country_flag = "tnf_three"
+					has_country_flag = "tnf_four"
+					has_country_flag = "tnf_five"
+					has_country_flag = "tnf_boostme"
+					has_country_flag = "tnf_boostai"
+					has_country_flag = "tnf_edictme"
+					has_country_flag = "tnf_edictai"
+				}
+			}
+		}
+		hidden_effect = { country_event = { id = TNF.1 } }
+	}
+
+	option = {
+		name = "folkunfair.advancemenu"
+		custom_tooltip = "folkunfair.advancemenu.tooltip"
+		hidden_effect = {
+			country_event = { id = tnfMenu.100 }
+		}
+	}
+	option = {
+		name = "folkunfair.boostmenu"
+		custom_tooltip = "folkunfair.boostmenu.tooltip"
+		hidden_effect = {
+			country_event = { id = tnfMenu.200 }
+		}
+	}
+	option = {
+		name = "folkunfair.edictmenu"
+		custom_tooltip = "folkunfair.edictmenu.tooltip"
+		hidden_effect = {
+			country_event = { id = tnfMenu.300 }
+		}
+	}
+}
+
+country_event = {
+	id = tnfMenu.100
+	title = "folkunfair.title"
+	desc = "folkunfair.advancemenu.desc"
+	picture = "GFX_evt_folkunfair_init"
+	is_triggered_only = yes
+
+	option = {
+		name = "folkunfair.back"
+		custom_tooltip = "folkunfair.back.tooltip"
+		hidden_effect = { country_event = { id = tnfMenu.1 } }
+	}
+	option = {
+		name = "folkunfair.one"
+		custom_tooltip = "folkunfair.one.tooltip"
+		allow = { hidden_trigger = { NOT = { has_country_flag = "tnf_one" } } }
+		hidden_effect = {
+			set_country_flag = "tnf_one"
+			remove_country_flag = "tnf_two"
+			remove_country_flag = "tnf_three"
+			remove_country_flag = "tnf_four"
+			remove_country_flag = "tnf_five"
+			country_event = { id = tnfMenu.100 }
+		}
+	}
+	option = {
+		name = "folkunfair.two"
+		custom_tooltip = "folkunfair.two.tooltip"
+		allow = { hidden_trigger = { NOT = { has_country_flag = "tnf_two" } } }
+		hidden_effect = {
+			remove_country_flag = "tnf_one"
+			set_country_flag = "tnf_two"
+			remove_country_flag = "tnf_three"
+			remove_country_flag = "tnf_four"
+			remove_country_flag = "tnf_five"
+			country_event = { id = tnfMenu.100 }
+		}
+	}
+	option = {
+		name = "folkunfair.three"
+		custom_tooltip = "folkunfair.three.tooltip"
+		allow = { hidden_trigger = { NOT = { has_country_flag = "tnf_three" } } }
+		hidden_effect = {
+			remove_country_flag = "tnf_one"
+			remove_country_flag = "tnf_two"
+			set_country_flag = "tnf_three"
+			remove_country_flag = "tnf_four"
+			remove_country_flag = "tnf_five"
+			country_event = { id = tnfMenu.100 }
+		}
+	}
+	option = {
+		name = "folkunfair.four"
+		custom_tooltip = "folkunfair.four.tooltip"
+		allow = { hidden_trigger = { NOT = { has_country_flag = "tnf_four" } } }
+		hidden_effect = {
+			remove_country_flag = "tnf_one"
+			remove_country_flag = "tnf_two"
+			remove_country_flag = "tnf_three"
+			set_country_flag = "tnf_four"
+			remove_country_flag = "tnf_five"
+			country_event = { id = tnfMenu.100 }
+		}
+	}
+	option = {
+		name = "folkunfair.equalize"
+		custom_tooltip = "folkunfair.equalize.tooltip"
+		allow = { hidden_trigger = { NOT = { has_country_flag = "tnf_five" } } }
+		hidden_effect = {
+			remove_country_flag = "tnf_one"
+			remove_country_flag = "tnf_two"
+			remove_country_flag = "tnf_three"
+			remove_country_flag = "tnf_four"
+			set_country_flag = "tnf_five"
+			country_event = { id = tnfMenu.100 }
+		}
+	}
+}
+
+country_event = {
+	id = tnfMenu.200
+	title = "folkunfair.title"
+	desc = "folkunfair.boostmenu.desc"
+	picture = "GFX_evt_folkunfair_init"
+	is_triggered_only = yes
+
+	option = {
+		name = "folkunfair.back"
+		custom_tooltip = "folkunfair.back.tooltip"
+		hidden_effect = { country_event = { id = tnfMenu.1 } }
+	}
+	option = {
+		name = "folkunfair.boostme"
+		custom_tooltip = "folkunfair.boostme.tooltip"
+		trigger = { NOT = { has_country_flag = "tnf_boostme" } }
+		hidden_effect = {
+			set_country_flag = "tnf_boostme"
+			country_event = { id = tnfMenu.200 }
+		}
+	}
+	option = {
+		name = "folkunfair.boostme.yes"
+		custom_tooltip = "folkunfair.boostme.tooltip"
+		trigger = { has_country_flag = "tnf_boostme" }
+		hidden_effect = {
+			remove_country_flag = "tnf_boostme"
+			country_event = { id = tnfMenu.200 }
+		}
+	}
+	option = {
+		name = "folkunfair.boostai"
+		custom_tooltip = "folkunfair.boostai.tooltip"
+		trigger = { NOT = { has_country_flag = "tnf_boostai" } }
+		hidden_effect = {
+			set_country_flag = "tnf_boostai"
+			country_event = { id = tnfMenu.200 }
+		}
+	}
+	option = {
+		name = "folkunfair.boostai.yes"
+		custom_tooltip = "folkunfair.boostai.tooltip"
+		trigger = { has_country_flag = "tnf_boostai" }
+		hidden_effect = {
+			remove_country_flag = "tnf_boostai"
+			country_event = { id = tnfMenu.200 }
+		}
+	}
+}
+
+country_event = {
+	id = tnfMenu.300
+	title = "folkunfair.title"
+	desc = "folkunfair.edictmenu.desc"
+	picture = "GFX_evt_folkunfair_init"
+	is_triggered_only = yes
+
+	option = {
+		name = "folkunfair.back"
+		custom_tooltip = "folkunfair.back.tooltip"
+		hidden_effect = { country_event = { id = tnfMenu.1 } }
+	}
+	option = {
+		name = "folkunfair.edictme"
+		custom_tooltip = "folkunfair.edictme.tooltip"
+		trigger = { NOT = { has_country_flag = "tnf_edictme" } }
+		hidden_effect = {
+			set_country_flag = "tnf_edictme"
+			country_event = { id = tnfMenu.300 }
+		}
+	}
+	option = {
+		name = "folkunfair.edictme.yes"
+		custom_tooltip = "folkunfair.edictme.tooltip"
+		trigger = { has_country_flag = "tnf_edictme" }
+		hidden_effect = {
+			remove_country_flag = "tnf_edictme"
+			country_event = { id = tnfMenu.300 }
+		}
+	}
+	option = {
+		name = "folkunfair.edictai"
+		custom_tooltip = "folkunfair.edictai.tooltip"
+		trigger = { NOT = { has_country_flag = "tnf_edictai" } }
+		hidden_effect = {
+			set_country_flag = "tnf_edictai"
+			country_event = { id = tnfMenu.300 }
+		}
+	}
+	option = {
+		name = "folkunfair.edictai.yes"
+		custom_tooltip = "folkunfair.edictai.tooltip"
+		trigger = { has_country_flag = "tnf_edictai" }
+		hidden_effect = {
+			remove_country_flag = "tnf_edictai"
+			country_event = { id = tnfMenu.300 }
+		}
+	}
+}

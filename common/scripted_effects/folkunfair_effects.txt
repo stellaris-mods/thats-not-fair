@@ -514,121 +514,118 @@ unfair_give_technologies = {
 			message = no
 		}
 	}
+}
 
+unfair_give_boost_techs = {
+	# powered exoskeletons
+	give_technology = {
+		tech = "tech_powered_exoskeletons"
+		message = no
+	}
+
+	# improved spaceport
+	give_technology = {
+		tech = "tech_spaceport_2"
+		message = no
+	}
+
+	# geothermal fracking
+	give_technology = {
+		tech = "tech_mining_network_2"
+		message = no
+	}
+
+	# orbital hydroponics
+	give_technology = {
+		tech = "tech_orbital_hydroponics"
+		message = no
+	}
+
+	# eco simulation
+	give_technology = {
+		tech = "tech_hydroponics"
+		message = no
+	}
+
+	# centralized command
+	give_technology = {
+		tech = "tech_centralized_command"
+		message = no
+	}
+
+	# global energy management
+	give_technology = {
+		tech = "tech_power_hub_1"
+		message = no
+	}
+
+	# Gravitic Sensors
+	give_technology = {
+		tech = "tech_sensors_2"
+		message = no
+	}
+
+	# field modulation
+	give_technology = {
+		tech = "tech_power_plant_2"
+		message = no
+	}
+
+	# Blocker techs
 	if = {
-		limit = {
-			has_country_flag = "folkunfair_allow_edict"
-		}
-		# powered exoskeletons
+		limit = { any_owned_planet = { any_tile = { has_blocker = "tb_mountain_range" } } }
 		give_technology = {
-			tech = "tech_powered_exoskeletons"
+			tech = "tech_tb_mountain_range"
 			message = no
 		}
-
-		# improved spaceport
+	}
+	if = {
+		limit = { any_owned_planet = { any_tile = { has_blocker = "tb_active_volcano" } } }
 		give_technology = {
-			tech = "tech_spaceport_2"
+			tech = "tech_tb_volcano"
 			message = no
 		}
-
-		# geothermal fracking
+	}
+	if = {
+		limit = { any_owned_planet = { any_tile = { has_blocker = "tb_dense_jungle" } } }
 		give_technology = {
-			tech = "tech_mining_network_2"
+			tech = "tech_tb_dense_jungle"
 			message = no
 		}
-
-		# orbital hydroponics
+	}
+	if = {
+		limit = { any_owned_planet = { any_tile = { has_blocker = "tb_quicksand_basin" } } }
 		give_technology = {
-			tech = "tech_orbital_hydroponics"
+			tech = "tech_tb_quicksand_basin"
 			message = no
 		}
-
-		# eco simulation
+	}
+	if = {
+		limit = { any_owned_planet = { any_tile = { has_blocker = "tb_noxious_swamp" } } }
 		give_technology = {
-			tech = "tech_hydroponics"
+			tech = "tech_tb_noxious_swamp"
 			message = no
 		}
-
-		# centralized command
+	}
+	if = {
+		limit = { any_owned_planet = { any_tile = { has_blocker = "tb_massive_glacier" } } }
 		give_technology = {
-			tech = "tech_centralized_command"
+			tech = "tech_tb_massive_glacier"
 			message = no
 		}
-
-		# global energy management
+	}
+	if = {
+		limit = { any_owned_planet = { any_tile = { has_blocker = "tb_toxic_kelp" } } }
 		give_technology = {
-			tech = "tech_power_hub_1"
+			tech = "tech_tb_toxic_kelp"
 			message = no
 		}
-
-		# Gravitic Sensors
+	}
+	if = {
+		limit = { any_owned_planet = { any_tile = { has_blocker = "tb_deep_sinkhole" } } }
 		give_technology = {
-			tech = "tech_sensors_2"
+			tech = "tech_tb_deep_sinkhole"
 			message = no
-		}
-
-		# field modulation
-		give_technology = {
-			tech = "tech_power_plant_2"
-			message = no
-		}
-
-		# Blocker techs
-		if = {
-			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_mountain_range" } } }
-			give_technology = {
-				tech = "tech_tb_mountain_range"
-				message = no
-			}
-		}
-		if = {
-			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_active_volcano" } } }
-			give_technology = {
-				tech = "tech_tb_volcano"
-				message = no
-			}
-		}
-		if = {
-			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_dense_jungle" } } }
-			give_technology = {
-				tech = "tech_tb_dense_jungle"
-				message = no
-			}
-		}
-		if = {
-			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_quicksand_basin" } } }
-			give_technology = {
-				tech = "tech_tb_quicksand_basin"
-				message = no
-			}
-		}
-		if = {
-			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_noxious_swamp" } } }
-			give_technology = {
-				tech = "tech_tb_noxious_swamp"
-				message = no
-			}
-		}
-		if = {
-			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_massive_glacier" } } }
-			give_technology = {
-				tech = "tech_tb_massive_glacier"
-				message = no
-			}
-		}
-		if = {
-			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_toxic_kelp" } } }
-			give_technology = {
-				tech = "tech_tb_toxic_kelp"
-				message = no
-			}
-		}
-		if = {
-			limit = { any_owned_planet = { any_tile = { has_blocker = "tb_deep_sinkhole" } } }
-			give_technology = {
-				tech = "tech_tb_deep_sinkhole"
-				message = no
-			}
 		}
 	}
 }
