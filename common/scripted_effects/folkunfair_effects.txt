@@ -16,7 +16,7 @@ tnf_find_system_priority_1 = {
 	}
 }
 
-# Within 100 distance of capital
+# Within 80 distance of capital
 tnf_find_system_priority_2 = {
 	capital_scope = {
 		random_system = {
@@ -205,7 +205,7 @@ tnf_find_planet_priority_5 = {
 
 # From country scope
 ensure_colonizable_planet = {
-	log = "[root.GetName]: Find planet for colonization #[root.UnfairColonize]."
+	log = "COUNTRY [root.GetName]: Colonizing #[root.UnfairColonize]."
 	# Step 1: Pick system
 	tnf_find_system_priority_1 = yes
 	if = { limit = { NOT = { any_system = { has_star_flag = "tnf_picked_system" } } }
@@ -682,106 +682,129 @@ unfair_give_technologies = {
 	}
 }
 
-# XXX This should probably be optimized slightly.
 ensure_planet_food = {
-	tnf_move_pop_for_food = yes
-	tnf_move_pop_for_food = yes
-	#tnf_move_pop_for_food = yes
-}
-
-# XXX I don't think the pop_produces_resource trigger below actually updates.
-# XXX Need to check this.
-tnf_move_pop_for_food = {
-	if = {
-		limit = { # Dont do anything below unless there's a free tile with food available.
+	set_variable = { which = "TNFPlanetFood" value = 0 }
+	set_variable = { which = "TNFNumPops" value = 0 }
+	every_tile = {
+		limit = { has_grown_pop = yes }
+		# ZZZ Remember that has_resource = { type = food } on a tile with building_hydroponics_farm_1 returns 1, not 3.
+		# ZZZ If there is no pop on it, obviously.
+		# Too bad we can't switch on pop_produces_resource
+		if = { limit = { pop = { pop_produces_resource = { type = food amount > 0 } } }
+			if = { limit = { pop = { pop_produces_resource = { type = food amount > 7.9 } } }
+				PREV = { change_variable = { which = "TNFPlanetFood" value = 8 } }
+			else = { if = { limit = { pop = { pop_produces_resource = { type = food amount > 6.9 } } }
+				PREV = { change_variable = { which = "TNFPlanetFood" value = 7 } }
+			else = { if = { limit = { pop = { pop_produces_resource = { type = food amount > 5.9 } } }
+				PREV = { change_variable = { which = "TNFPlanetFood" value = 6 } }
+			else = { if = { limit = { pop = { pop_produces_resource = { type = food amount > 4.9 } } }
+				PREV = { change_variable = { which = "TNFPlanetFood" value = 5 } }
+			else = { if = { limit = { pop = { pop_produces_resource = { type = food amount > 3.9 } } }
+				PREV = { change_variable = { which = "TNFPlanetFood" value = 4 } }
+			else = { if = { limit = { pop = { pop_produces_resource = { type = food amount > 2.9 } } }
+				PREV = { change_variable = { which = "TNFPlanetFood" value = 3 } }
+			else = { if = { limit = { pop = { pop_produces_resource = { type = food amount > 1.9 } } }
+				PREV = { change_variable = { which = "TNFPlanetFood" value = 2 } }
+			else = { if = { limit = { pop = { pop_produces_resource = { type = food amount > 0.9 } } }
+				PREV = { change_variable = { which = "TNFPlanetFood" value = 1 } }
+			} } } } } } } } } } } } } } }
+			else = {
+				pop = { set_pop_flag = "tnf_can_move" }
+			}
+		}
+		# We need to count the pops because we can't compare a trigger to a variable
+		PREV = { change_variable = { which = "TNFNumPops" value = 1 } }
+	}
+	#
+	# ZZZ Apparently after we create_pop on a tile with food,
+	# ZZZ pop_produces_resource = { type = food amount = 0 } is true for that pop.
+	# ZZZ But on further testing, it did update sometimes when I just repeated ensure_planet_food.
+	# ZZZ It might be that using `every_tile` makes pop_produces_resource update its results.
+	# ZZZ Or, it might just be that I did too few tests, and that there's some other magic.
+	#
+	while = {
+		limit = {
+			check_variable = { which = "TNFNumPops" value > 0 }
+			check_variable = { which = "TNFPlanetFood" value > 0 }
+			check_variable = { which = "TNFNumPops" value > "TNFPlanetFood" }
 			any_tile = {
 				tnf_tile_spawnable = yes
-				has_resource = { type = food amount > 0 }
+				has_resource = food
 			}
+			any_pop = { has_pop_flag = "tnf_can_move" }
 		}
-		# We need to start with 1, because we cant compare with zero later (variables that are 0
-		# are simply deleted in the backend. At least they do not show in tooltips.)
-		# XXX That said, I should try an explicit test where I compare against variables
-		# XXX that don't exist.
-		# XXX Should also test a localisation string where I reference two variables, one
-		# XXX set to 0 and one that isn't set.
-		set_variable = { which = "TNFPlanetFood" value = 1 }
-		set_variable = { which = "TNFNumPops" value = 1 }
-		every_tile = {
-			limit = { has_grown_pop = yes }
-			# Too bad we can't switch on pop_produces_resource
-			# ZZZ Remember that pops produce fractional resources with modifiers.
-			if = { limit = { pop = { pop_produces_resource { type = food amount > 5.9 } } }
-				PREV = { change_variable = { which = "TNFPlanetFood" value = 6 } }
-			else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 4.9 } } }
-				PREV = { change_variable = { which = "TNFPlanetFood" value = 5 } }
-			else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 3.9 } } }
-				PREV = { change_variable = { which = "TNFPlanetFood" value = 4 } }
-			else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 2.9 } } }
-				PREV = { change_variable = { which = "TNFPlanetFood" value = 3 } }
-			else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 1.9 } } }
-				PREV = { change_variable = { which = "TNFPlanetFood" value = 2 } }
-			else = { if = { limit = { pop = { pop_produces_resource { type = food amount > 0.9 } } }
-				PREV = { change_variable = { which = "TNFPlanetFood" value = 1 } }
-			} } } } } } } } } } }
-			# We need to count the pops because we can't compare a trigger to a variable
-			PREV = { change_variable = { which = "TNFNumPops" value = 1 } }
-		}
-		if = {
-			limit = {
-				check_variable = { which = "TNFNumPops" value > "TNFPlanetFood" }
-				any_tile = {
-					tnf_tile_spawnable = yes
-					has_resource = { type = food amount > 0 }
-				}
-			}
-			# This might not actually remove any pops, if for some weird reason
-			# they all produce some food. I do declare, I don't care.
-			random_owned_pop = {
-				limit = { pop_produces_resource { type = food amount = 0 } }
-				kill_pop = yes
-			}
-
-			# Try to find a tile with 3, 2, and 1 food, in that order
-			if = {
-				limit = {
-					any_tile = {
-						tnf_tile_spawnable = yes
-						has_resource = { type = food amount > 2 }
-					}
-				}
-				random_tile = {
-					limit = {
-						tnf_tile_spawnable = yes
-						has_resource = { type = food amount > 2 }
-					}
-					create_pop = { species = owner_main_species ethos = ROOT }
-				}
-			else = { if = {
-				limit = {
-					any_tile = {
-						tnf_tile_spawnable = yes
-						has_resource = { type = food amount > 1 }
-					}
-				}
-				random_tile = {
-					limit = {
-						tnf_tile_spawnable = yes
-						has_resource = { type = food amount > 1 }
-					}
-					create_pop = { species = owner_main_species ethos = ROOT }
-				}
-			else = {
-				random_tile = {
-					limit = {
-						tnf_tile_spawnable = yes
-						has_resource = { type = food amount > 0 }
-					}
-					create_pop = { species = owner_main_species ethos = ROOT }
-				}
-			} } } }
-			log = "PLANET [this.GetName]: Not enough food, so we moved a pop."
-		}
-
+		tnf_move_pop_to_food = yes
 	}
+
+	# Dont put garbage in debugtooltips
+	if = { limit = { NOT = { has_global_flag = "debug" } }
+		every_owned_pop = { remove_pop_flag = "tnf_can_move" }
+		set_variable = { which = "TNFNumPops" value = 0 }
+		set_variable = { which = "TNFPlanetFood" value = 0 }
+	}
+}
+
+tnf_move_pop_to_food = {
+	# This might not actually remove any pops, if for some weird reason
+	# they all produce some food. I do declare, I don't care.
+	random_pop = {
+		limit = { has_pop_flag = "tnf_can_move" }
+		kill_pop = yes
+	}
+	# Try to find a tile with 4, 3, 2, and 1 food, in that order
+	# d_immense_farmland_deposit, d_vast_farmland_deposit, d_rich_farmland_deposit, d_farmland_deposit
+	# But we don't check for specific deposits, to be more compatible with other addons that add
+	# new kinds of food deposits.
+	#
+	# Apparently, has_resource = { type = food amount > X } also includes any building, so a tile with
+	# 1 food + building_hydroponics_farm_1 will produce 3. Which means we need to scan up to 6.
+	# ZZZ But it seems that's only true if the tile has a pop.
+	if = {
+		limit = { any_tile = { tnf_tile_spawnable = yes has_resource = { type = food amount > 5 } } }
+		random_tile = {
+			limit = { tnf_tile_spawnable = yes has_resource = { type = food amount > 5 } }
+			log = "PLANET [Prev.GetName]: Moved pop to tile with F>5 (P[Prev.TNFNumPops]>F[Prev.TNFPlanetFood])."
+			create_pop = { species = owner_main_species ethos = ROOT }
+		}
+		change_variable = { which = "TNFPlanetFood" value = 6 }
+	else = { if = {
+		limit = { any_tile = { tnf_tile_spawnable = yes has_resource = { type = food amount > 4 } } }
+		random_tile = {
+			limit = { tnf_tile_spawnable = yes has_resource = { type = food amount > 4 } }
+			log = "PLANET [Prev.GetName]: Moved pop to tile with F>4 (P[Prev.TNFNumPops]>F[Prev.TNFPlanetFood])."
+			create_pop = { species = owner_main_species ethos = ROOT }
+		}
+		change_variable = { which = "TNFPlanetFood" value = 5 }
+	else = { if = {
+		limit = { any_tile = { tnf_tile_spawnable = yes has_resource = { type = food amount > 3 } } }
+		random_tile = {
+			limit = { tnf_tile_spawnable = yes has_resource = { type = food amount > 3 } }
+			log = "PLANET [Prev.GetName]: Moved pop to tile with F>3 (P[Prev.TNFNumPops]>F[Prev.TNFPlanetFood])."
+			create_pop = { species = owner_main_species ethos = ROOT }
+		}
+		change_variable = { which = "TNFPlanetFood" value = 4 }
+	else = { if = {
+		limit = { any_tile = { tnf_tile_spawnable = yes has_resource = { type = food amount > 2 } } }
+		random_tile = {
+			limit = { tnf_tile_spawnable = yes has_resource = { type = food amount > 2 } }
+			log = "PLANET [Prev.GetName]: Moved pop to tile with F>2 (P[Prev.TNFNumPops]>F[Prev.TNFPlanetFood])."
+			create_pop = { species = owner_main_species ethos = ROOT }
+		}
+		change_variable = { which = "TNFPlanetFood" value = 3 }
+	else = { if = {
+		limit = { any_tile = { tnf_tile_spawnable = yes has_resource = { type = food amount > 1 } } }
+		random_tile = {
+			limit = { tnf_tile_spawnable = yes has_resource = { type = food amount > 1 } }
+			log = "PLANET [Prev.GetName]: Moved pop to tile with F>1 (P[Prev.TNFNumPops]>F[Prev.TNFPlanetFood])."
+			create_pop = { species = owner_main_species ethos = ROOT }
+		}
+		change_variable = { which = "TNFPlanetFood" value = 2 }
+	else = {
+		random_tile = {
+			limit = { tnf_tile_spawnable = yes has_resource = food }
+			log = "PLANET [Prev.GetName]: Moved pop to tile with F=1 (P[Prev.TNFNumPops]>F[Prev.TNFPlanetFood])."
+			create_pop = { species = owner_main_species ethos = ROOT }
+		}
+		change_variable = { which = "TNFPlanetFood" value = 1 }
+	} } } } } } } } } }
 }
