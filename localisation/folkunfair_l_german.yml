@@ -57,14 +57,13 @@ folkunfair.equalize.tooltip: "Makes sure all players and standard AI empires eac
 
 folkunfair.boostmenu: "§YBoost ...§!"
 folkunfair.boostmenu.tooltip: "Opens a new menu where you can give players or AIs the That's Not Fair-boost!"
-folkunfair.boostmenu.desc: "The options below allow you to boost either all players, AIs, or both.\n\nBoosting an empire gives it access to several additional technologies at game start, and techs required to clear most tile blockers on their colonized planets.\n\nSpecifically: $tech_power_hub_1$, $tech_sensors_2$, $tech_power_plant_2$, $tech_orbital_hydroponics$, $tech_hydroponics$, $tech_centralized_command$, $tech_powered_exoskeletons$, $tech_spaceport_2$, $tech_mining_network_2$, and tile blocker technologies for those present on colonized planets (except Dangerous Wildlife)."
-
+folkunfair.boostmenu.desc: "The options below allow you to boost either all players, AIs, or both.\n\nBoosting an empire gives it access to several additional technologies at game start, and techs required to clear most tile blockers on their colonized planets.\n\nSpecifically: §B$tech_power_hub_1$§!, §B$tech_sensors_2$§!, §B$tech_power_plant_2$§!, §G$tech_orbital_hydroponics$§!, §G$tech_hydroponics$§!, §G$tech_centralized_command$§!, §H$tech_powered_exoskeletons$§!, §H$tech_spaceport_2$§!, §H$tech_mining_network_2$§!, and tile blocker technologies for those present on colonized planets (except Dangerous Wildlife)."
 folkunfair.boostme.yes: "§PDisable boost for players§!"
-folkunfair.boostme: "§GEnable boost for players!§"
+folkunfair.boostme: "§GEnable boost for players!§!"
 folkunfair.boostme.tooltip: "Give additional technologies to player empires."
 
 folkunfair.boostai.yes: "§PDisable boost for AIs§!"
-folkunfair.boostai: "§GEnable boost for AIs!§"
+folkunfair.boostai: "§GEnable boost for AIs!§!"
 folkunfair.boostai.tooltip: "Give additional technologies to AI empires."
 
 # Edict ...
