@@ -1,11 +1,13 @@
 namespace = tnfInit
 
+# On game start
 event = {
 	id = tnfInit.1
 	hide_window = yes
 	is_triggered_only = yes
 
 	immediate = {
+		set_global_flag = "has_thats_not_fair"
 		# Find a player country first so we have a scope to work in
 		# (you cant use set_variable and such outside a country scope)
 		random_country = {
