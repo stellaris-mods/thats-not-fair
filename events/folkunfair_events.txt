@@ -98,6 +98,15 @@ country_event = {
 			}
 		}
 
+		# Advance
+		while = {
+			limit = { any_country = { check_variable = { which = "UnfairColonize" value > 0 } } }
+			random_country = {
+				limit = { check_variable = { which = "UnfairColonize" value > 0 } }
+				country_event = { id = TNF.5 }
+			}
+		}
+
 		# Boost
 		while = {
 			limit = { any_country = { has_country_flag = "tnf_boost" } }
@@ -105,15 +114,6 @@ country_event = {
 				limit = { has_country_flag = "tnf_boost" }
 				remove_country_flag = "tnf_boost"
 				unfair_give_boost_techs = yes
-			}
-		}
-
-		# Advance
-		while = {
-			limit = { any_country = { check_variable = { which = "UnfairColonize" value > 0 } } }
-			random_country = {
-				limit = { check_variable = { which = "UnfairColonize" value > 0 } }
-				country_event = { id = TNF.5 }
 			}
 		}
 
