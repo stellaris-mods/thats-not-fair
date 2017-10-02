@@ -15,7 +15,7 @@ addonMenu.back: "§Y<<< Back§!"
 
 folkunfair.title: "That's Not Fair!"
 folkunfair.unfair: "The average colonized planet count for §HAdvanced Start§! AI empires in this game §Gseems to be [addonMenuCountry.FolkUnfairPlanetCount]§!.\n\n§YPlease select how you wish to seed player empires below, to counter these totally unfair circumstances!§!\n\nThe first option will mimic an §HAdvanced Start§! for all players. The §YBoost§!-option provides additional technologies, and also making sure that empires have the technologies required to clear tile blockers on their planets. The §YEdict§! provides for accelerated gameplay.\n\n§RImportant: Technologies and planets are given a day after the game starts running. Let it run for one day before picking research options.§!"
-folkunfair.fair: "There doesn't seem to be any standard AI empires with more than one planet.\n\nYou can still give all players an §Runfair advantage§! below. Or give everyone a boost! Enjoy!"
+folkunfair.fair: "There doesn't seem to be any regular AI Empires with more than one planet.\n\nYou can still give all players an §Runfair advantage§! below. Or give everyone a boost! Enjoy!"
 
 folkunfair.default: "§MDo not give anyone anything§! (Default)"
 folkunfair.default.tooltip: "Starts the game as if you did not have this addon installed."
@@ -58,7 +58,7 @@ folkunfair.four: "Give players §Bfour§! planets"
 folkunfair.four.tooltip: "Provides players with 4 additional colonized planets and all other perks that §HAdvanced Start§! AI empires get."
 
 folkunfair.equalize: "§GEqualize everyone!"
-folkunfair.equalize.tooltip: "Makes sure all players and standard AI empires each have a total of 5 colonized systems and the rest of the §HAdvanced Start§! benefits."
+folkunfair.equalize.tooltip: "Makes sure all players and regular AI Empires each have a total of 5 colonized systems and the rest of the §HAdvanced Start§! benefits."
 
 # Boost ...
 
@@ -89,14 +89,13 @@ folkunfair.edictme.tooltip: "Gives all players access to the cheat edict."
 
 folkunfair.edictai.yes: "§PDisable edict for AIs§!"
 folkunfair.edictai: "§GEnable edict for AIs!§!"
-folkunfair.edictai.tooltip: "Gives all standard AI empires access to the cheat edict."
+folkunfair.edictai.tooltip: "Gives all regular AI Empires access to the cheat edict."
 
 folkunfair.edictboth: "§GEnable edict for both!§!"
-folkunfair.edictboth.tooltip: "Gives all players and standard AI empires access to the cheat edict."
+folkunfair.edictboth.tooltip: "Gives all players and regular AI Empires access to the cheat edict."
 
 # Ingame
 
 edict_folkunfair_boost: "Fair/unfair Boost §R(!)§!"
-edict_folkunfair_boost_desc: "Ladies and gentlemen, this is entertainment! Remember that if you selected \"Boost AIs\", all standard AI empires will have this edict active for the whole game now. You are free to do so if you choose.\n\n"
-
+edict_folkunfair_boost_desc: "Ladies and gentlemen, this is entertainment! Remember that if you selected \"Boost AIs\", all regular AI Empires will have this edict active for the whole game now. You are free to do so if you choose.\n\n"
 
