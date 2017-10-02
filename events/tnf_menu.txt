@@ -5,6 +5,13 @@ country_event = {
 	title = "folkunfair.title"
 	picture = "GFX_evt_folkunfair_init"
 	is_triggered_only = yes
+
+	immediate = {
+		if = { limit = { NOT = { has_global_flag = "tnf_calculations_done" } }
+			country_event = { id = tnfInit.2 }
+		}
+	}
+
 	desc = {
 		trigger = {
 			success_text = {
@@ -115,16 +122,36 @@ country_event = {
 	}
 
 	trigger = {
-		has_country_flag = "unfair_playercountry"
+		is_same_value = event_target:addonMenuCountry
+		OR = {
+			has_global_flag = "inAddonMenu"
+			NOT = { has_global_flag = "addonMenuMultiple" }
+		}
 	}
 
 	option = {
+		name = "addonMenu.back"
+		default_hide_option = yes
+		trigger = {
+			has_global_flag = "inAddonMenu"
+			has_global_flag = "addonMenuMultiple"
+		}
+		hidden_effect = { country_event = { id = addonMenu.20 } }
+	}
+	option = {
 		name = "folkunfair.default"
+		default_hide_option = yes
+		trigger = {
+			NOT = { has_global_flag = "addonMenuMultiple" }
+		}
 		custom_tooltip = "folkunfair.default.tooltip"
 	}
 	option = {
 		name = "folkunfair.apply"
 		custom_tooltip = "folkunfair.apply.tooltip"
+		trigger = {
+			NOT = { has_global_flag = "addonMenuMultiple" }
+		}
 		allow = {
 			hidden_trigger = {
 				OR = {
@@ -188,7 +215,7 @@ country_event = {
 			remove_country_flag = "tnf_three"
 			remove_country_flag = "tnf_four"
 			remove_country_flag = "tnf_five"
-			country_event = { id = tnfMenu.100 }
+			country_event = { id = tnfMenu.1 }
 		}
 	}
 	option = {
@@ -201,7 +228,7 @@ country_event = {
 			remove_country_flag = "tnf_three"
 			remove_country_flag = "tnf_four"
 			remove_country_flag = "tnf_five"
-			country_event = { id = tnfMenu.100 }
+			country_event = { id = tnfMenu.1 }
 		}
 	}
 	option = {
@@ -214,7 +241,7 @@ country_event = {
 			set_country_flag = "tnf_three"
 			remove_country_flag = "tnf_four"
 			remove_country_flag = "tnf_five"
-			country_event = { id = tnfMenu.100 }
+			country_event = { id = tnfMenu.1 }
 		}
 	}
 	option = {
@@ -227,7 +254,7 @@ country_event = {
 			remove_country_flag = "tnf_three"
 			set_country_flag = "tnf_four"
 			remove_country_flag = "tnf_five"
-			country_event = { id = tnfMenu.100 }
+			country_event = { id = tnfMenu.1 }
 		}
 	}
 	option = {
@@ -240,7 +267,7 @@ country_event = {
 			remove_country_flag = "tnf_three"
 			remove_country_flag = "tnf_four"
 			set_country_flag = "tnf_five"
-			country_event = { id = tnfMenu.100 }
+			country_event = { id = tnfMenu.1 }
 		}
 	}
 }
@@ -263,7 +290,7 @@ country_event = {
 		trigger = { NOT = { has_country_flag = "tnf_boostme" } }
 		hidden_effect = {
 			set_country_flag = "tnf_boostme"
-			country_event = { id = tnfMenu.200 }
+			country_event = { id = tnfMenu.1 }
 		}
 	}
 	option = {
@@ -272,7 +299,7 @@ country_event = {
 		trigger = { has_country_flag = "tnf_boostme" }
 		hidden_effect = {
 			remove_country_flag = "tnf_boostme"
-			country_event = { id = tnfMenu.200 }
+			country_event = { id = tnfMenu.1 }
 		}
 	}
 	option = {
@@ -281,7 +308,7 @@ country_event = {
 		trigger = { NOT = { has_country_flag = "tnf_boostai" } }
 		hidden_effect = {
 			set_country_flag = "tnf_boostai"
-			country_event = { id = tnfMenu.200 }
+			country_event = { id = tnfMenu.1 }
 		}
 	}
 	option = {
@@ -290,7 +317,22 @@ country_event = {
 		trigger = { has_country_flag = "tnf_boostai" }
 		hidden_effect = {
 			remove_country_flag = "tnf_boostai"
-			country_event = { id = tnfMenu.200 }
+			country_event = { id = tnfMenu.1 }
+		}
+	}
+	option = {
+		name = "folkunfair.boostboth"
+		custom_tooltip = "folkunfair.boostboth.tooltip"
+		allow = {
+			OR = {
+				NOT = { has_country_flag = "tnf_boostai" }
+				NOT = { has_country_flag = "tnf_boostme" }
+			}
+		}
+		hidden_effect = {
+			set_country_flag = "tnf_boostai"
+			set_country_flag = "tnf_boostme"
+			country_event = { id = tnfMenu.1 }
 		}
 	}
 }
@@ -313,7 +355,7 @@ country_event = {
 		trigger = { NOT = { has_country_flag = "tnf_edictme" } }
 		hidden_effect = {
 			set_country_flag = "tnf_edictme"
-			country_event = { id = tnfMenu.300 }
+			country_event = { id = tnfMenu.1 }
 		}
 	}
 	option = {
@@ -322,7 +364,7 @@ country_event = {
 		trigger = { has_country_flag = "tnf_edictme" }
 		hidden_effect = {
 			remove_country_flag = "tnf_edictme"
-			country_event = { id = tnfMenu.300 }
+			country_event = { id = tnfMenu.1 }
 		}
 	}
 	option = {
@@ -331,7 +373,7 @@ country_event = {
 		trigger = { NOT = { has_country_flag = "tnf_edictai" } }
 		hidden_effect = {
 			set_country_flag = "tnf_edictai"
-			country_event = { id = tnfMenu.300 }
+			country_event = { id = tnfMenu.1 }
 		}
 	}
 	option = {
@@ -340,7 +382,22 @@ country_event = {
 		trigger = { has_country_flag = "tnf_edictai" }
 		hidden_effect = {
 			remove_country_flag = "tnf_edictai"
-			country_event = { id = tnfMenu.300 }
+			country_event = { id = tnfMenu.1 }
+		}
+	}
+	option = {
+		name = "folkunfair.edictboth"
+		custom_tooltip = "folkunfair.edictboth.tooltip"
+		allow = {
+			OR = {
+				NOT = { has_country_flag = "tnf_edictai" }
+				NOT = { has_country_flag = "tnf_edictme" }
+			}
+		}
+		hidden_effect = {
+			set_country_flag = "tnf_edictai"
+			set_country_flag = "tnf_edictme"
+			country_event = { id = tnfMenu.1 }
 		}
 	}
 }

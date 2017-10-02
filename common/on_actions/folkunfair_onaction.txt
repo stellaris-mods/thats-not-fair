@@ -1,11 +1,13 @@
 on_game_start = {
 	events = {
 		tnfInit.1
+		addonMenu.10
 	}
 }
 
 on_press_begin = {
 	events = {
+		addonMenu.20
 		tnfMenu.1
 	}
 }

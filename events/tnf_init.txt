@@ -8,24 +8,17 @@ event = {
 
 	immediate = {
 		set_global_flag = "has_thats_not_fair"
-		# Find a player country first so we have a scope to work in
-		# (you cant use set_variable and such outside a country scope)
-		random_country = {
-			limit = { tnf_is_player = yes }
-			set_country_flag = "unfair_playercountry"
-			country_event = {
-				id = tnfInit.2
-			}
-		}
 	}
 }
 
+# Triggered when the menu shows, if needed
 country_event = {
 	id = tnfInit.2
 	hide_window = yes
 	is_triggered_only = yes
 
 	immediate = {
+		set_global_flag = "tnf_calculations_done"
 		set_variable = {
 			which = "FolkUnfairPlanetCount"
 			value = 0
@@ -50,7 +43,7 @@ country_event = {
 						num_owned_planets > 1
 					}
 					set_country_flag = "tnf_was_advanced"
-					root = {
+					ROOT = {
 						change_variable = {
 							which = "FolkUnfairAICount"
 							value = 1 # +1
@@ -61,7 +54,7 @@ country_event = {
 					switch = {
 						trigger = num_owned_planets
 						2 = {
-							root = {
+							ROOT = {
 								change_variable = {
 									which = "FolkUnfairPlanetCount"
 									value = 2
@@ -69,7 +62,7 @@ country_event = {
 							}
 						}
 						3 = {
-							root = {
+							ROOT = {
 								change_variable = {
 									which = "FolkUnfairPlanetCount"
 									value = 3
@@ -77,7 +70,7 @@ country_event = {
 							}
 						}
 						4 = {
-							root = {
+							ROOT = {
 								change_variable = {
 									which = "FolkUnfairPlanetCount"
 									value = 4
@@ -85,7 +78,7 @@ country_event = {
 							}
 						}
 						default = {
-							root = {
+							ROOT = {
 								change_variable = {
 									which = "FolkUnfairPlanetCount"
 									value = 5

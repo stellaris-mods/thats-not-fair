@@ -6,8 +6,15 @@
 #l_russian:
 #l_spanish:
 
+# Mod menu
+folkunfair_modmenu: "§YThat's Not Fair! ...§!"
+addonMenu.title: "Addon Features"
+addonMenu.desc: "Welcome! In this menu you can find lots of features to enable/disable before game start. You are the only player that has access to this menu, so please choose carefully - and most likely you should confer with any other players about which features to enable or disable.\n\n§PIt's important that you take the time to go through the menus. No other player can see this menu.§!"
+addonMenu.done: "§GApply features and close menu§!"
+addonMenu.back: "§Y<<< Back§!"
+
 folkunfair.title: "That's Not Fair!"
-folkunfair.unfair: "The average colonized planet count for §HAdvanced Start§! AI empires in this game §Gseems to be [Root.FolkUnfairPlanetCount]§!.\n\n§YPlease select how you wish to seed player empires below, to counter these totally unfair circumstances!§!\n\nThe first option will mimic an §HAdvanced Start§! for all players. The §YBoost§!-option provides additional technologies, and also making sure that empires have the technologies required to clear tile blockers on their planets. The §YEdict§! provides for accelerated gameplay.\n\n§RImportant: Technologies and planets are given a day after the game starts running. Let it run for one day before picking research options.§!"
+folkunfair.unfair: "The average colonized planet count for §HAdvanced Start§! AI empires in this game §Gseems to be [addonMenuCountry.FolkUnfairPlanetCount]§!.\n\n§YPlease select how you wish to seed player empires below, to counter these totally unfair circumstances!§!\n\nThe first option will mimic an §HAdvanced Start§! for all players. The §YBoost§!-option provides additional technologies, and also making sure that empires have the technologies required to clear tile blockers on their planets. The §YEdict§! provides for accelerated gameplay.\n\n§RImportant: Technologies and planets are given a day after the game starts running. Let it run for one day before picking research options.§!"
 folkunfair.fair: "There doesn't seem to be any standard AI empires with more than one planet.\n\nYou can still give all players an §Runfair advantage§! below. Or give everyone a boost! Enjoy!"
 
 folkunfair.default: "§MDo not give anyone anything§! (Default)"
@@ -67,6 +74,9 @@ folkunfair.boostai.yes: "§PDisable boost for AIs§!"
 folkunfair.boostai: "§GEnable boost for AIs§!"
 folkunfair.boostai.tooltip: "Give additional technologies to AI empires."
 
+folkunfair.boostboth: "§GEnable boost for both§!"
+folkunfair.boostboth.tooltip: "Give additional technologies to both player and AI empires."
+
 # Edict ...
 
 folkunfair.edictmenu: "§YCheat Edict ...§!"
@@ -80,6 +90,9 @@ folkunfair.edictme.tooltip: "Gives all players access to the cheat edict."
 folkunfair.edictai.yes: "§PDisable edict for AIs§!"
 folkunfair.edictai: "§GEnable edict for AIs!§!"
 folkunfair.edictai.tooltip: "Gives all standard AI empires access to the cheat edict."
+
+folkunfair.edictboth: "§GEnable edict for both!§!"
+folkunfair.edictboth.tooltip: "Gives all players and standard AI empires access to the cheat edict."
 
 # Ingame
 
