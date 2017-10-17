@@ -196,8 +196,9 @@ country_event = {
 
 			if = {
 				limit = { exists = event_target:unfairplanet }
-				ensure_ideal_planet = yes
 				event_target:unfairplanet = {
+					ensure_ideal_planet = yes
+					reroll_deposits = yes
 					orbital_deposit_tile = { clear_deposits = yes }
 					ensure_planet_size = yes
 					ensure_system_clean = yes
@@ -363,6 +364,9 @@ country_event = {
 	is_triggered_only = yes
 	immediate = {
 		# Without this we will never get access to terraforming
+		# ZZZ I don't think that's true any more. Vanilla still sets
+		# ZZZ the flag, but it doesn't check it anywhere (previously
+		# ZZZ it was a weight modifier on the terraforming tech).
 		set_country_flag = "homesystem_surveyed"
 
 		# Dont do every planet inside border, just where we
@@ -383,10 +387,15 @@ country_event = {
 								is_planet_class = "pc_barren"
 								is_planet_class = "pc_barren_cold"
 							}
+							planet_size > 9
+							planet_size < 26
 						}
-						add_modifier = {
-							modifier = "terraforming_candidate"
-							days = -1
+						random = {
+							chance = 15
+							add_modifier = {
+								modifier = "terraforming_candidate"
+								days = -1
+							}
 						}
 					}
 				}
